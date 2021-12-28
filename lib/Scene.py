@@ -3,12 +3,10 @@
 from PyQt5 import QtCore, QtWidgets
 
 from lib.Logger import Logger, FilePaths
-from lib.Entity import Entity
-import lib.Geometry as geom
+from lib.GameObjects import Predator,Prey
 from lib.Map import Map
 
 from numpy.ctypeslib import ndpointer
-import os, json, ctypes
 import numpy as np
 
 class Scene(QtWidgets.QWidget):
@@ -21,7 +19,7 @@ class Scene(QtWidgets.QWidget):
         self.initialize_scene()
 
     def initialize_scene(self):
-        x,y = 35,35
+        x,y = 64,34
         self.logger.log(f'Creating map with chunk size: [{x},{y}]')
         self.map = Map(x,y)
         self.entities.update({'map':self.map})

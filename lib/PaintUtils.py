@@ -9,21 +9,12 @@ class PaintUtils(object):
     def __init__(self):
         self.colors = {
             "black":"#000000",
-            "gray":"#353535",
-            "light_gray":"#ABABAB",
-            "white":"#FFFFFF",
-            "brown":"#996633",
-            "sky_blue":"#1BADDE",
-            "midnight_blue":"#051962",
-            "star_gold":"#F7D31E",
-            "forest_green":"#38690E",
-            "light_green":"#00FF00",
-            "red":"#DF0101",
-            "maroon":"#B40431",
-            "green":"#00d600",
-            "orange":"#ffb224"
+            "light_gray":"#a5a5a5",
+            "water_blue":"#0000a8",
+            "grass_green":"#358d33",
+            "sand":"#f3e48c"
         }
-        self.reserved_colors = ['black','brown','light_gray','green','red','orange']
+        self.reserved_colors = ['black']
 
     def random_color(self):
         '''

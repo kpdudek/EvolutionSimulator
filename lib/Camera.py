@@ -75,3 +75,6 @@ class Camera(object):
         '''
         for entity in self.scene.entities.values():
             self.paint_entity(entity)
+
+        self.paint_utils.set_color(self.painter,'black',True)
+        self.painter.drawRect(200,200,22,22)

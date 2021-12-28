@@ -2,7 +2,6 @@
 
 import numpy as np
 from math import cos, sin, atan2
-import time
 
 def pixels_to_meters(pixels):
     return 0.01 * float(pixels)
