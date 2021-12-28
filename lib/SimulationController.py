@@ -5,6 +5,7 @@ from PyQt5.QtCore import Qt, QTimer
 from PyQt5 import QtGui, uic
 
 from lib.Logger import FilePaths, Logger
+from lib.Map import Map
 
 import numpy as np
 
@@ -22,8 +23,7 @@ class SimulationController(QWidget):
         uic.loadUi(f'{self.file_paths.user_path}ui/simulation_controller.ui',self)
         self.setWindowTitle('Simulation Controller')
 
-        # self.map_config_combobox.currentIndexChanged.connect(self.set_map_config)
-        self.apply_button.clicked.connect(self.set_map_config)
+        self.create_button.clicked.connect(self.set_map_config)
         self.update_map_configs_combobox()
 
         self.apply_settings()
@@ -35,8 +35,11 @@ class SimulationController(QWidget):
     def set_map_config(self,i):
         idx = self.map_config_combobox.currentIndex()
         self.logger.log(f'Setting map index: {idx}')
-        self.scene.map.map_config_idx = idx
-        self.scene.map.generate_map()
+
+        x = self.x_map_size_spinbox.value()
+        y = self.y_map_size_spinbox.value()
+        self.scene.map = Map(x,y,idx)
+        self.scene.entities['map'] = self.scene.map
 
     def update_map_configs_combobox(self):
         self.map_config_combobox.addItems(self.scene.map.map_configs)

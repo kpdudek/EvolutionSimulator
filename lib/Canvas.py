@@ -35,7 +35,7 @@ class Canvas(QLabel):
         self.logger = Logger()
         self.scene = Scene(self.fps)
         self.camera = Camera(np.array([900,900]),self.painter,self.scene)
-        # self.simulation_controller = SimulationController(self.scene,self.camera)
+        self.simulation_controller = SimulationController(self.scene,self.camera)
 
         self.game_timer = QTimer()
         self.game_timer.timeout.connect(self.game_loop)
@@ -83,8 +83,8 @@ class Canvas(QLabel):
 
     def shutdown(self):
         self.close()
-        # if self.simulation_controller.isEnabled():
-        #     self.simulation_controller.close()
+        if self.simulation_controller.isEnabled():
+            self.simulation_controller.close()
 
     def fps_log(self):
         self.logger.log(f'Max FPS: {self.loop_fps}')

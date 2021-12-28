@@ -21,7 +21,7 @@ class Map(object):
     '''
     This class uses Perlin Noise to generate a 2D tile map.
     '''
-    def __init__(self,x,y):
+    def __init__(self,x,y,idx=0):
         super().__init__()
         self.chunk_size = np.array([x,y])
         self.config = {'type':'map'}
@@ -30,6 +30,7 @@ class Map(object):
         self.logger = Logger()
         self.file_paths = FilePaths()
 
+        self.map_config_idx = idx
         self.tiles = []
         self.load_configs()
         self.generate_map()
@@ -45,7 +46,6 @@ class Map(object):
             elif self.map_params[key]['type'] == 'fractal':
                 self.map_params[key]['noise'] = Noise.generate_fractal_noise_2d((self.chunk_size[0],self.chunk_size[1]),(1,1))
         self.map_configs = list(self.map_params.keys())
-        self.map_config_idx = 0
         self.logger.log(f'Map configs found: {self.map_configs}')
         
     def generate_map(self):

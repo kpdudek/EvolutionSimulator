@@ -19,7 +19,7 @@ class Scene(QtWidgets.QWidget):
         self.initialize_scene()
 
     def initialize_scene(self):
-        x,y = 64,34
+        x,y = 38,38
         self.logger.log(f'Creating map with chunk size: [{x},{y}]')
         self.map = Map(x,y)
         self.entities.update({'map':self.map})
