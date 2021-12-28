@@ -15,11 +15,11 @@ class Scene(QtWidgets.QWidget):
     def __init__(self,fps):
         super().__init__()
         self.logger = Logger()
+        self.file_paths = FilePaths()
         self.entities = {}
-        self.initialize_scene()
 
-    def initialize_scene(self):
-        x,y = 38,38
+    def initialize_scene(self,size=(38,38)):
+        x,y = size
         self.logger.log(f'Creating map with chunk size: [{x},{y}]')
         self.map = Map(x,y)
         self.entities.update({'map':self.map})

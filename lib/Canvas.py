@@ -1,10 +1,9 @@
 #!/usr/bin/env python3
 
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt, QTimer, pyqtSignal
 from PyQt5.QtWidgets import QLabel
 from PyQt5 import QtGui
 
-from lib.SimulationController import SimulationController
 from lib.Camera import Camera
 from lib.Logger import Logger
 from lib.Scene import Scene
@@ -16,6 +15,7 @@ class Canvas(QLabel):
     '''
     This class initializes the window
     '''
+    shutdown_signal = pyqtSignal()
     def __init__(self,screen_resolution):
         super().__init__()
         window_size = [800,800]
@@ -25,6 +25,8 @@ class Canvas(QLabel):
         self.setGeometry(offset_x,offset_y,window_size[0],window_size[1])
         self.setWindowTitle('PyEvolution')
 
+        self.simulation_controller = None
+        self.is_shutting_down = False
         self.keys_pressed = []
         self.debug_mode = False
         self.fps = 30.0
@@ -35,8 +37,6 @@ class Canvas(QLabel):
         self.logger = Logger()
         self.scene = Scene(self.fps)
         self.camera = Camera(np.array([900,900]),self.painter,self.scene)
-        self.simulation_controller = SimulationController(self.scene,self.camera)
-        self.simulation_controller.shutdown_signal.connect(self.shutdown)
 
         self.game_timer = QTimer()
         self.game_timer.timeout.connect(self.game_loop)
@@ -44,7 +44,6 @@ class Canvas(QLabel):
 
         self.fps_log_timer = QTimer()
         self.fps_log_timer.timeout.connect(self.fps_log)
-        self.fps_log_timer.start(2000)
 
         self.setFocusPolicy(Qt.StrongFocus)
         self.show()
@@ -86,13 +85,14 @@ class Canvas(QLabel):
             self.keys_pressed.remove(event.key())
 
     def closeEvent(self, e):
-        self.logger.log('Shutdown signal received.')
+        if not self.is_shutting_down:
+            self.logger.log('Shutdown signal received.')
+            self.is_shutting_down = True
         self.shutdown()
 
     def shutdown(self):
         self.close()
-        if self.simulation_controller.isEnabled():
-            self.simulation_controller.close()
+        self.shutdown_signal.emit()
 
     def fps_log(self):
         self.logger.log(f'Max FPS: {self.loop_fps}')

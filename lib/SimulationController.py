@@ -15,21 +15,18 @@ class SimulationController(QWidget):
     '''
     shutdown_signal = pyqtSignal()
 
-    def __init__(self,scene,camera):
+    def __init__(self,canvas):
         super().__init__()
         self.logger = Logger()
         self.file_paths = FilePaths()
-        self.scene = scene
-        self.camera = camera
+        self.canvas = canvas
+        self.is_shutting_down = False
 
         uic.loadUi(f'{self.file_paths.user_path}ui/simulation_controller.ui',self)
         self.setWindowTitle('Simulation Controller')
+        self.create_button.clicked.connect(self.apply_settings)
 
-        self.create_button.clicked.connect(self.set_map_config)
-        self.update_map_configs_combobox()
-
-        # self.apply_settings()
-        self.show()
+        self.apply_settings()
 
     def keyPressEvent(self, event):
         key = event.key()
@@ -38,9 +35,23 @@ class SimulationController(QWidget):
             self.shutdown_signal.emit()
         elif key == Qt.Key_1:
             self.close()
+
+    def closeEvent(self, e):
+        if not self.is_shutting_down:
+            self.logger.log('Shutdown signal received.')
+            self.is_shutting_down = True
+        self.shutdown()
     
+    def shutdown(self):
+        self.close()
+
     def apply_settings(self):
         self.set_map_config()
+        self.update_map_configs_combobox()
+        self.set_fps_logging()
+
+    def update_map_configs_combobox(self):
+        self.map_config_combobox.addItems(self.canvas.scene.map.map_configs)
 
     def set_map_config(self):
         idx = self.map_config_combobox.currentIndex()
@@ -48,8 +59,10 @@ class SimulationController(QWidget):
 
         x = self.x_map_size_spinbox.value()
         y = self.y_map_size_spinbox.value()
-        self.scene.map = Map(x,y,idx)
-        self.scene.entities['map'] = self.scene.map
+        self.canvas.scene.initialize_scene(size=(x,y))
 
-    def update_map_configs_combobox(self):
-        self.map_config_combobox.addItems(self.scene.map.map_configs)
+    def set_fps_logging(self):
+        if self.log_fps_checkbox.isChecked():
+            self.canvas.fps_log_timer.start(2000)
+        else:
+            self.canvas.fps_log_timer.stop()

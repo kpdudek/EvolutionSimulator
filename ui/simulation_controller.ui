@@ -23,14 +23,26 @@
       <enum>QFrame::Raised</enum>
      </property>
      <layout class="QGridLayout" name="gridLayout_2">
-      <item row="5" column="0" colspan="2">
+      <item row="6" column="0" colspan="2">
+       <widget class="QCheckBox" name="display_frames_checkbox">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Display frames</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="0" colspan="2">
        <widget class="Line" name="line">
         <property name="orientation">
          <enum>Qt::Horizontal</enum>
         </property>
        </widget>
       </item>
-      <item row="8" column="0" colspan="2">
+      <item row="9" column="0" colspan="2">
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>
@@ -45,30 +57,44 @@
       </item>
       <item row="3" column="0" colspan="2">
        <widget class="QLabel" name="label_2">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Map Size:</string>
         </property>
        </widget>
       </item>
       <item row="1" column="0" colspan="2">
-       <widget class="QComboBox" name="map_config_combobox"/>
+       <widget class="QComboBox" name="map_config_combobox">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+       </widget>
       </item>
       <item row="0" column="0" colspan="2">
        <widget class="QLabel" name="label">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Map Config:</string>
         </property>
        </widget>
       </item>
-      <item row="7" column="0" colspan="2">
-       <widget class="QPushButton" name="start_button">
-        <property name="text">
-         <string>Start</string>
-        </property>
-       </widget>
-      </item>
-      <item row="6" column="0" colspan="2">
+      <item row="8" column="0" colspan="2">
        <widget class="QPushButton" name="create_button">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="text">
          <string>Create</string>
         </property>
@@ -76,6 +102,11 @@
       </item>
       <item row="4" column="0">
        <widget class="QSpinBox" name="x_map_size_spinbox">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="maximum">
          <number>150</number>
         </property>
@@ -86,11 +117,28 @@
       </item>
       <item row="4" column="1">
        <widget class="QSpinBox" name="y_map_size_spinbox">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
         <property name="maximum">
          <number>80</number>
         </property>
         <property name="value">
          <number>38</number>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" colspan="2">
+       <widget class="QCheckBox" name="log_fps_checkbox">
+        <property name="font">
+         <font>
+          <pointsize>12</pointsize>
+         </font>
+        </property>
+        <property name="text">
+         <string>Log FPS</string>
         </property>
        </widget>
       </item>
