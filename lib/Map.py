@@ -33,7 +33,7 @@ class Map(object):
     '''
     This class uses Perlin Noise to generate a 2D tile map.
     '''
-    def __init__(self,x,y,idx=0):
+    def __init__(self,x,y,config_text=None,idx=0):
         super().__init__()
         self.chunk_size = np.array([x,y])
         self.config = {'type':'map'}
@@ -43,6 +43,7 @@ class Map(object):
         self.file_paths = FilePaths()
 
         self.map_config_idx = idx
+        self.map_config_text = config_text
         self.tiles = []
         self.load_configs()
         self.generate_map()
@@ -66,7 +67,10 @@ class Map(object):
         size = np.array([tile_size,tile_size])
         color = None
         
-        noise_type = self.map_configs[self.map_config_idx]
+        if self.map_config_text:
+            noise_type = self.map_config_text
+        else:
+            noise_type = self.map_configs[self.map_config_idx]
         noise = self.map_params[noise_type]['noise']
         land_cutoff = self.map_params[noise_type]['land_cutoff']
         sand_cutoff = self.map_params[noise_type]['sand_cutoff']

@@ -30,6 +30,7 @@ class SimulationController(QMainWindow):
         self.action_load_default.triggered.connect(self.load_default)
 
         self.apply_settings()
+        self.update_map_configs_combobox()
 
     def keyPressEvent(self, event):
         key = event.key()
@@ -58,12 +59,14 @@ class SimulationController(QMainWindow):
     def load_default(self):
         self.logger.log(f'Loading default simulation...')
 
+    def update_map_configs_combobox(self):
+        self.map_config_combobox.addItems(self.canvas.scene.map.map_configs)
+
     def apply_settings(self):
         '''
             Generate a new simulation by calling each settings method
         '''
         self.set_map_config()
-        self.update_map_configs_combobox()
         self.set_fps_logging()
         self.set_fps_display()
 
@@ -73,15 +76,9 @@ class SimulationController(QMainWindow):
     #       The apply_settings() method calls each of these methods to generate a new simulation.
     ####################################################################################################
     def set_map_config(self):
-        idx = self.map_config_combobox.currentIndex()
-        self.logger.log(f'Setting map index: {idx}')
-
         x = self.x_map_size_spinbox.value()
         y = self.y_map_size_spinbox.value()
-        self.canvas.scene.initialize_scene(size=(x,y))
-
-    def update_map_configs_combobox(self):
-        self.map_config_combobox.addItems(self.canvas.scene.map.map_configs)
+        self.canvas.scene.initialize_scene(self.map_config_combobox.currentText(),size=(x,y))
 
     def set_fps_logging(self):
         if self.log_fps_checkbox.isChecked():
