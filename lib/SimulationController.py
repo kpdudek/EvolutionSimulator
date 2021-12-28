@@ -49,6 +49,7 @@ class SimulationController(QWidget):
         self.set_map_config()
         self.update_map_configs_combobox()
         self.set_fps_logging()
+        self.set_fps_display()
 
     def update_map_configs_combobox(self):
         self.map_config_combobox.addItems(self.canvas.scene.map.map_configs)
@@ -66,3 +67,10 @@ class SimulationController(QWidget):
             self.canvas.fps_log_timer.start(2000)
         else:
             self.canvas.fps_log_timer.stop()
+    
+    def set_fps_display(self):
+        if self.display_fps_checkbox.isChecked():
+            self.canvas.camera.display_fps_overlay = True
+        else:
+            self.canvas.camera.display_fps_overlay = False
+        

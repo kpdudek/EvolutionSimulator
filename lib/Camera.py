@@ -25,7 +25,6 @@ class Camera(object):
             }
 
         self.display_fps_overlay = True
-        self.display_tails = False
 
     def reset(self):
         self.teleport(np.zeros((2)))

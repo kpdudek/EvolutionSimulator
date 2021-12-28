@@ -67,6 +67,16 @@ class Canvas(QLabel):
     def resizeEvent(self, e):
         self.resize_canvas(e.size().width(),e.size().height())
 
+    def closeEvent(self, e):
+        if not self.is_shutting_down:
+            self.logger.log('Shutdown signal received.')
+            self.is_shutting_down = True
+        self.shutdown()
+
+    def shutdown(self):
+        self.close()
+        self.shutdown_signal.emit()
+    
     def keyPressEvent(self, event):
         key = event.key()              
         if key == Qt.Key_Escape:
@@ -84,19 +94,6 @@ class Canvas(QLabel):
         if not event.isAutoRepeat() and event.key() in self.keys_pressed:
             self.keys_pressed.remove(event.key())
 
-    def closeEvent(self, e):
-        if not self.is_shutting_down:
-            self.logger.log('Shutdown signal received.')
-            self.is_shutting_down = True
-        self.shutdown()
-
-    def shutdown(self):
-        self.close()
-        self.shutdown_signal.emit()
-
-    def fps_log(self):
-        self.logger.log(f'Max FPS: {self.loop_fps}')
-
     def process_keys(self):
         cam_speed = 3.0
         for key in self.keys_pressed:
@@ -110,6 +107,9 @@ class Canvas(QLabel):
                 self.camera.translate(np.array([0.0,-cam_speed]))
             elif key == Qt.Key_R:
                 self.camera.reset()
+
+    def fps_log(self):
+        self.logger.log(f'Max FPS: {self.loop_fps}')
 
     def game_loop(self):
         tic = time.time()
