@@ -52,10 +52,11 @@ class Camera(object):
         coord = point + (self.frames[parent_frame] - self.frames[child_frame])
         return coord
 
-    def clear_display(self,fps):
+    def clear_display(self):
         self.paint_utils.set_color(self.painter,'light_gray',True)
         self.painter.drawRect(0,0,self.frame_size[0],self.frame_size[1])
 
+    def fps_overlay(self,fps):
         if self.display_fps_overlay:
             self.paint_utils.set_color(self.painter,'black',True)
             self.painter.drawText(3,13,200,75,QtCore.Qt.TextWordWrap,str(int(fps)))
@@ -67,7 +68,8 @@ class Camera(object):
                 if tile.color.toRgb() != prev_color:
                     self.paint_utils.set_color(self.painter,tile.color,True)
                     prev_color = tile.color.toRgb()
-                self.painter.drawRect(tile.pose[0],tile.pose[1],tile.size[0],tile.size[1])
+                pose = self.transform(tile.pose.copy())
+                self.painter.drawRect(pose[0],pose[1],tile.size[0],tile.size[1])
         
     def update(self):
         '''
@@ -75,6 +77,3 @@ class Camera(object):
         '''
         for entity in self.scene.entities.values():
             self.paint_entity(entity)
-
-        self.paint_utils.set_color(self.painter,'black',True)
-        self.painter.drawRect(200,200,22,22)

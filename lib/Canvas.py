@@ -41,7 +41,7 @@ class Canvas(QLabel):
 
         self.fps_log_timer = QTimer()
         self.fps_log_timer.timeout.connect(self.fps_log)
-        self.fps_log_timer.start(1000)
+        self.fps_log_timer.start(2000)
 
         self.show()
 
@@ -85,10 +85,26 @@ class Canvas(QLabel):
     def fps_log(self):
         self.logger.log(f'Max FPS: {self.loop_fps}')
 
+    def process_keys(self):
+        cam_speed = 3.0
+        for key in self.keys_pressed:
+            if key == Qt.Key_A:
+                self.camera.translate(np.array([cam_speed,0.0]))
+            elif key == Qt.Key_D:
+                self.camera.translate(np.array([-cam_speed,0.0]))
+            elif key == Qt.Key_W:
+                self.camera.translate(np.array([0.0,cam_speed]))
+            elif key == Qt.Key_S:
+                self.camera.translate(np.array([0.0,-cam_speed]))
+            elif key == Qt.Key_R:
+                self.camera.reset()
+
     def game_loop(self):
         tic = time.time()
-        self.camera.clear_display(self.loop_fps)
+        self.process_keys()
+        self.camera.clear_display()
         self.camera.update()
+        self.camera.fps_overlay(self.loop_fps)
         self.repaint()
         toc = time.time()
 
