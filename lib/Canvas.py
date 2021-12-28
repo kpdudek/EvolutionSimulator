@@ -36,6 +36,7 @@ class Canvas(QLabel):
         self.scene = Scene(self.fps)
         self.camera = Camera(np.array([900,900]),self.painter,self.scene)
         self.simulation_controller = SimulationController(self.scene,self.camera)
+        self.simulation_controller.shutdown_signal.connect(self.shutdown)
 
         self.game_timer = QTimer()
         self.game_timer.timeout.connect(self.game_loop)
@@ -45,6 +46,7 @@ class Canvas(QLabel):
         self.fps_log_timer.timeout.connect(self.fps_log)
         self.fps_log_timer.start(2000)
 
+        self.setFocusPolicy(Qt.StrongFocus)
         self.show()
 
     def resize_canvas(self,width,height):
@@ -66,12 +68,18 @@ class Canvas(QLabel):
     def resizeEvent(self, e):
         self.resize_canvas(e.size().width(),e.size().height())
 
-    def keyPressEvent(self, event):                
-        if event.key() == Qt.Key_Escape:
+    def keyPressEvent(self, event):
+        key = event.key()              
+        if key == Qt.Key_Escape:
             self.shutdown()
+        elif key == Qt.Key_1:
+            if self.simulation_controller.isVisible():
+                self.simulation_controller.hide()
+            else:
+                self.simulation_controller.show()
         else:
-            if event.key() not in self.keys_pressed:
-                self.keys_pressed.append(event.key())
+            if key not in self.keys_pressed:
+                self.keys_pressed.append(key)
 
     def keyReleaseEvent(self, event):
         if not event.isAutoRepeat() and event.key() in self.keys_pressed:

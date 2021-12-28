@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from PyQt5.QtWidgets import QWidget
-from PyQt5.QtCore import Qt, QTimer
+from PyQt5.QtCore import Qt, QTimer, pyqtSignal
 from PyQt5 import QtGui, uic
 
 from lib.Logger import FilePaths, Logger
@@ -13,6 +13,8 @@ class SimulationController(QWidget):
     '''
     This class initializes the window
     '''
+    shutdown_signal = pyqtSignal()
+
     def __init__(self,scene,camera):
         super().__init__()
         self.logger = Logger()
@@ -28,11 +30,19 @@ class SimulationController(QWidget):
 
         self.apply_settings()
         self.show()
+
+    def keyPressEvent(self, event):
+        key = event.key()
+        if key == Qt.Key_Escape:
+            self.logger.log(f'Sending shutdown signal...')
+            self.shutdown_signal.emit()
+        elif key == Qt.Key_1:
+            self.close()
     
     def apply_settings(self):
-        pass
+        self.set_map_config()
 
-    def set_map_config(self,i):
+    def set_map_config(self):
         idx = self.map_config_combobox.currentIndex()
         self.logger.log(f'Setting map index: {idx}')
 
