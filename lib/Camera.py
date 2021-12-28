@@ -66,7 +66,6 @@ class Camera(object):
             prev_color = None
             for tile in entity.tiles:
                 if tile.color.toRgb() != prev_color:
-                    # self.paint_utils.set_color(self.painter,tile.color,True)
                     self.painter.setPen(tile.pen)
                     self.painter.setBrush(tile.brush)
                     prev_color = tile.color.toRgb()

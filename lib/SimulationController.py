@@ -28,7 +28,7 @@ class SimulationController(QWidget):
         self.create_button.clicked.connect(self.set_map_config)
         self.update_map_configs_combobox()
 
-        self.apply_settings()
+        # self.apply_settings()
         self.show()
 
     def keyPressEvent(self, event):

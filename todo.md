@@ -12,6 +12,7 @@ Generate terrain
     - each tile has a terrain type, moisture content (with water being unique at 100), color, etc.
     - generate food
     - Add saving capability
+    - Merge similar tiles into one polygon to reduce number of draw calls
 
 Game Rules:
 - Moving costs energy (in units of calories)
