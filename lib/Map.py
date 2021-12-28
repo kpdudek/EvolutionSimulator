@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 
+from PyQt5.QtCore import Qt
 from PyQt5 import QtGui
 
-from lib.PaintUtils import PaintUtils
 from lib.Logger import Logger, FilePaths
+from lib.PaintUtils import PaintUtils
+import lib.Errors as errors
 from lib import Noise
 
 import numpy as np
@@ -13,9 +15,19 @@ class Tile():
     def __init__(self,pose,size,color,terrain_type,moisture):
         self.pose = pose
         self.size = size
+        if not isinstance(color,QtGui.QColor):
+            raise errors.MustBeQColor(color)
         self.color = color
         self.terrain_type = terrain_type
         self.moisture_content = moisture
+
+        self.pen = QtGui.QPen()
+        self.pen.setWidth(1)
+        self.brush = QtGui.QBrush()
+        self.brush.setStyle(Qt.SolidPattern)
+
+        self.pen.setColor(self.color)
+        self.brush.setColor(self.color)
 
 class Map(object):
     '''
