@@ -1,18 +1,20 @@
+Simulation controller
+- Add an option to save the current config as default
 
 Generate rabbits
-    - size and color determine attractiveness
-    - eat grass and drink water
+- size and color determine attractiveness
+- eat grass and drink water
 
 Generate foxes
-    - eat rabbits
-    - fight with eachother for control of land
+- eat rabbits
+- fight with eachother for control of land
 
 Generate terrain
-    - 2D perlin noise generates a tile map
-    - each tile has a terrain type, moisture content (with water being unique at 100), color, etc.
-    - generate food
-    - Add saving capability
-    - Merge similar tiles into one polygon to reduce number of draw calls
+- 2D perlin noise generates a tile map
+- each tile has a terrain type, moisture content (with water being unique at 100), color, etc.
+- generate food
+- Add saving capability
+- Merge similar tiles into one polygon to reduce number of draw calls
 
 Game Rules:
 - Moving costs energy (in units of calories)
@@ -22,5 +24,6 @@ Camera
 - Add acceleration on movements
 
 Questions:
+- Figure out pixmap shading so lighting is possible and dynamic color changing (eg. for coat color)
 - How many tiles can I draw at once? This will be a chunk.
 - Should I paint directly on a QLabel or should I use QGraphicsScene

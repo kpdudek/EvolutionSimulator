@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 
 from PyQt5.QtWidgets import QApplication
-from lib.Canvas import Canvas
-from lib.Logger import Logger
 
 from lib.SimulationController import SimulationController
+from lib.Canvas import Canvas
+from lib.Logger import Logger
 
 import sys
 

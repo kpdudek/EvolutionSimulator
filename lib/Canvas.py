@@ -32,7 +32,8 @@ class Canvas(QLabel):
         self.fps = 30.0
         self.loop_fps = -1.0
         self.painter = None
-
+        
+        self.camera = None
         self.resize_canvas(window_size[0],window_size[1])
         self.logger = Logger()
         self.scene = Scene(self.fps)
@@ -49,20 +50,17 @@ class Canvas(QLabel):
         self.show()
 
     def resize_canvas(self,width,height):
-        try:
+        if isinstance(self.painter,QtGui.QPainter):
             self.painter.end()
-        except:
-            pass
+
         self.frame_size = np.array([width,height])
         self.canvas_pixmap = QtGui.QPixmap(self.frame_size[0],self.frame_size[1])
         self.setPixmap(self.canvas_pixmap)
         self.painter = QtGui.QPainter(self.pixmap())
-        try:
+
+        if isinstance(self.camera,Camera):
             self.camera.painter = self.painter
             self.camera.frame_size = self.frame_size
-        except:
-            pass
-        self.resize_flag = False
 
     def resizeEvent(self, e):
         self.resize_canvas(e.size().width(),e.size().height())
@@ -120,7 +118,7 @@ class Canvas(QLabel):
         self.repaint()
         toc = time.time()
 
-        try:
+        # Calculate max FPS
+        loop_split = toc-tic
+        if loop_split > 0.0:
             self.loop_fps = 1.0/(toc-tic)
-        except:
-            pass

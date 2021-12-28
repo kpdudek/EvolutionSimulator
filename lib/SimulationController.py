@@ -36,6 +36,10 @@ class SimulationController(QWidget):
         elif key == Qt.Key_1:
             self.close()
 
+    def showEvent(self, e):
+        self.logger.log('Open signal received.')
+        self.is_shutting_down = False
+
     def closeEvent(self, e):
         if not self.is_shutting_down:
             self.logger.log('Shutdown signal received.')
@@ -46,14 +50,19 @@ class SimulationController(QWidget):
         self.close()
 
     def apply_settings(self):
+        '''
+            Generate a new simulation by calling each settings method
+        '''
         self.set_map_config()
         self.update_map_configs_combobox()
         self.set_fps_logging()
         self.set_fps_display()
 
-    def update_map_configs_combobox(self):
-        self.map_config_combobox.addItems(self.canvas.scene.map.map_configs)
-
+    ####################################################################################################
+    #   Settings Methods:
+    #       The following methods implement the actions needed to generate a new simulation.
+    #       The apply_settings() method calls each of these methods to generate a new simulation.
+    ####################################################################################################
     def set_map_config(self):
         idx = self.map_config_combobox.currentIndex()
         self.logger.log(f'Setting map index: {idx}')
@@ -61,6 +70,9 @@ class SimulationController(QWidget):
         x = self.x_map_size_spinbox.value()
         y = self.y_map_size_spinbox.value()
         self.canvas.scene.initialize_scene(size=(x,y))
+
+    def update_map_configs_combobox(self):
+        self.map_config_combobox.addItems(self.canvas.scene.map.map_configs)
 
     def set_fps_logging(self):
         if self.log_fps_checkbox.isChecked():
@@ -73,4 +85,3 @@ class SimulationController(QWidget):
             self.canvas.camera.display_fps_overlay = True
         else:
             self.canvas.camera.display_fps_overlay = False
-        
