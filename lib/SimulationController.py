@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from PyQt5.QtWidgets import QWidget
+from PyQt5.QtWidgets import QWidget, QMainWindow
 from PyQt5.QtCore import Qt, QTimer, pyqtSignal
 from PyQt5 import QtGui, uic
 
@@ -9,7 +9,7 @@ from lib.Map import Map
 
 import numpy as np
 
-class SimulationController(QWidget):
+class SimulationController(QMainWindow):
     '''
     This class initializes the window
     '''
@@ -22,9 +22,12 @@ class SimulationController(QWidget):
         self.canvas = canvas
         self.is_shutting_down = False
 
-        uic.loadUi(f'{self.file_paths.user_path}ui/simulation_controller.ui',self)
+        uic.loadUi(f'{self.file_paths.user_path}ui/simulation_controller_mainwindow.ui',self)
         self.setWindowTitle('Simulation Controller')
+
         self.create_button.clicked.connect(self.apply_settings)
+        self.action_save_default.triggered.connect(self.save_as_default)
+        self.action_load_default.triggered.connect(self.load_default)
 
         self.apply_settings()
 
@@ -48,6 +51,12 @@ class SimulationController(QWidget):
     
     def shutdown(self):
         self.close()
+
+    def save_as_default(self):
+        self.logger.log(f'Saving current simulation as default...')
+
+    def load_default(self):
+        self.logger.log(f'Loading default simulation...')
 
     def apply_settings(self):
         '''
