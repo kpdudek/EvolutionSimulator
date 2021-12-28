@@ -2,12 +2,12 @@
 
 from PyQt5 import QtGui
 
-from lib.Logger import Logger
+from lib.PaintUtils import PaintUtils
+from lib.Logger import Logger, FilePaths
 from lib import Noise
 
 import numpy as np
-
-from lib.PaintUtils import PaintUtils
+import os, json
 
 class Tile():
     def __init__(self,pose,size,color,terrain_type,moisture):
@@ -28,35 +28,36 @@ class Map(object):
 
         self.paint_utils = PaintUtils()
         self.logger = Logger()
+        self.file_paths = FilePaths()
 
         self.tiles = []
+        self.load_configs()
         self.generate_map()
 
+    def load_configs(self):
+        fp = open(f'{self.file_paths.maps_path}configs.json','r')
+        self.map_params = json.load(fp)
+        fp.close()
+        keys = list(self.map_params.keys())
+        for key in keys:
+            if self.map_params[key]['type'] == 'perlin':
+                self.map_params[key]['noise'] = Noise.generate_perlin_noise(self.chunk_size[0],self.chunk_size[1])
+            elif self.map_params[key]['type'] == 'fractal':
+                self.map_params[key]['noise'] = Noise.generate_fractal_noise_2d((self.chunk_size[0],self.chunk_size[1]),(1,1))
+        self.map_configs = list(self.map_params.keys())
+        self.map_config_idx = 0
+        self.logger.log(f'Map configs found: {self.map_configs}')
+        
     def generate_map(self):
         tile_size = 30.0
         pose = np.array([0.0,0.0])
         size = np.array([tile_size,tile_size])
         color = None
         
-        # noise = Noise.generate_perlin_noise(self.chunk_size[0],self.chunk_size[1])
-        # noise = Noise.generate_fractal_noise_2d((self.chunk_size[0],self.chunk_size[1]),(1,1))
-
-        map_params = {
-                    "perlin":{
-                                "noise":Noise.generate_perlin_noise(self.chunk_size[0],self.chunk_size[1]),
-                                "land_cutoff":0.0,
-                                "sand_cutoff":-0.15},
-                    "fractal":{
-                                "noise":Noise.generate_fractal_noise_2d((self.chunk_size[0],self.chunk_size[1]),(1,1)),
-                                "land_cutoff":-0.08,
-                                "sand_cutoff":-0.11}}
-        
-        map_configs = list(map_params.keys())
-        self.logger.log(f'Map configs found: {map_configs}')
-        noise_type = map_configs[1]
-        noise = map_params[noise_type]['noise']
-        land_cutoff = map_params[noise_type]['land_cutoff']
-        sand_cutoff = map_params[noise_type]['sand_cutoff']
+        noise_type = self.map_configs[self.map_config_idx]
+        noise = self.map_params[noise_type]['noise']
+        land_cutoff = self.map_params[noise_type]['land_cutoff']
+        sand_cutoff = self.map_params[noise_type]['sand_cutoff']
         for x in range(self.chunk_size[0]):
             for y in range(self.chunk_size[1]):
                 if noise[x,y] >= land_cutoff:

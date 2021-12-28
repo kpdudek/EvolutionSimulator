@@ -4,6 +4,7 @@ from PyQt5.QtCore import Qt, QTimer
 from PyQt5.QtWidgets import QLabel
 from PyQt5 import QtGui
 
+from lib.SimulationController import SimulationController
 from lib.Camera import Camera
 from lib.Logger import Logger
 from lib.Scene import Scene
@@ -34,6 +35,7 @@ class Canvas(QLabel):
         self.logger = Logger()
         self.scene = Scene(self.fps)
         self.camera = Camera(np.array([900,900]),self.painter,self.scene)
+        # self.simulation_controller = SimulationController(self.scene,self.camera)
 
         self.game_timer = QTimer()
         self.game_timer.timeout.connect(self.game_loop)
@@ -81,6 +83,8 @@ class Canvas(QLabel):
 
     def shutdown(self):
         self.close()
+        # if self.simulation_controller.isEnabled():
+        #     self.simulation_controller.close()
 
     def fps_log(self):
         self.logger.log(f'Max FPS: {self.loop_fps}')

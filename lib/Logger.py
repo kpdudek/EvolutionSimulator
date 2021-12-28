@@ -7,12 +7,16 @@ class FilePaths(object):
     if sys.platform == 'win32':
         user_path = str(pathlib.Path().absolute()) + '\\'
         lib_path = user_path + 'lib\\'
-        entity_path = user_path + 'entities\\'
+        ui_path = user_path + 'ui\\'
+        maps_path = user_path + 'maps\\'
+        game_objects_path = user_path + 'game_objects\\'
         cc_lib_path = 'CollisionChecker.dll'
     elif sys.platform == 'linux':    
         user_path = str(pathlib.Path().absolute()) + '/'
         lib_path = user_path + 'lib/'
-        entity_path = user_path + 'entities/'
+        ui_path = user_path + 'ui/'
+        maps_path = user_path + 'maps/'
+        game_objects_path = user_path + 'game_objects/'
         cc_lib_path = 'CollisionChecker.so'
     else:
         raise Error('OS not recognized!')

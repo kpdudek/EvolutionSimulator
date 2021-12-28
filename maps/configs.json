@@ -1,0 +1,13 @@
+{
+    "perlin_normal":{
+                "type":"perlin",
+                "noise":null,
+                "land_cutoff":-0.08,
+                "sand_cutoff":-0.15},
+
+    "fractal_normal":{
+                "type":"fractal",
+                "noise":null,
+                "land_cutoff":-0.08,
+                "sand_cutoff":-0.11}
+}
