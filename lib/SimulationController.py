@@ -78,7 +78,12 @@ class SimulationController(QMainWindow):
     def set_map_config(self):
         x = self.x_map_size_spinbox.value()
         y = self.y_map_size_spinbox.value()
-        self.canvas.scene.initialize_scene(self.map_config_combobox.currentText(),size=(x,y))
+        config_name = self.map_config_combobox.currentText()
+        if x%2 != 0 or y%2 != 0:
+            self.logger.log(f'Map size must be multiple of 2!',color='r')
+            return
+        tile_size = self.tile_size_spinbox.value()
+        self.canvas.scene.initialize_scene(config_name,tile_size=tile_size,size=(x,y))
 
     def set_fps_logging(self):
         if self.log_fps_checkbox.isChecked():

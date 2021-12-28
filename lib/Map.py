@@ -33,7 +33,7 @@ class Map(object):
     '''
     This class uses Perlin Noise to generate a 2D tile map.
     '''
-    def __init__(self,x,y,config_text=None,idx=0):
+    def __init__(self,x,y,tile_size=30,config_text=None,idx=0):
         super().__init__()
         self.chunk_size = np.array([x,y])
         self.config = {'type':'map'}
@@ -44,6 +44,7 @@ class Map(object):
 
         self.map_config_idx = idx
         self.map_config_text = config_text
+        self.tile_size = tile_size
         self.tiles = []
         self.load_configs()
         self.generate_map()
@@ -57,14 +58,13 @@ class Map(object):
             if self.map_params[key]['type'] == 'perlin':
                 self.map_params[key]['noise'] = Noise.generate_perlin_noise(self.chunk_size[0],self.chunk_size[1])
             elif self.map_params[key]['type'] == 'fractal':
-                self.map_params[key]['noise'] = Noise.generate_fractal_noise_2d((self.chunk_size[0],self.chunk_size[1]),(1,1))
+                self.map_params[key]['noise'] = Noise.generate_fractal_noise_2d((self.chunk_size[0],self.chunk_size[1]),(2,2))
         self.map_configs = list(self.map_params.keys())
         self.logger.log(f'Map configs found: {self.map_configs}')
         
     def generate_map(self):
-        tile_size = 30.0
         pose = np.array([0.0,0.0])
-        size = np.array([tile_size,tile_size])
+        size = np.array([self.tile_size,self.tile_size])
         color = None
         
         if self.map_config_text:
@@ -90,6 +90,6 @@ class Map(object):
                     moisture = 1.0
                 tile = Tile(pose.copy(),size.copy(),color,terrain_type,moisture)
                 self.tiles.append(tile)
-                pose[1] += tile_size
+                pose[1] += self.tile_size
             pose[1] = 0.0
-            pose[0] += tile_size
+            pose[0] += self.tile_size
