@@ -69,11 +69,13 @@ class Canvas(QLabel):
         if not self.is_shutting_down:
             self.logger.log('Shutdown signal received.')
             self.is_shutting_down = True
+        self.shutdown_signal.emit()
         self.shutdown()
 
     def shutdown(self):
+        if self.painter.isActive():
+            self.painter.end()
         self.close()
-        self.shutdown_signal.emit()
     
     def keyPressEvent(self, event):
         key = event.key()              
