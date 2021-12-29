@@ -1,5 +1,8 @@
 {
     "object":"rabbit",
     "type":"prey",
-    "mass":2.5
+    "pose":[300,300],
+    "mass":2.5,
+    "predators":["wolf"],
+    "prey":["grass"]
 }

@@ -50,9 +50,8 @@ class Map(object):
         self.generate_map()
 
     def load_config(self):
-        fp = open(f'{self.file_paths.maps_path}configs.json','r')
-        self.map_params = json.load(fp)
-        fp.close()
+        with open(f'{self.file_paths.maps_path}configs.json','r') as fp:
+            self.map_params = json.load(fp)
 
         # Get the name of the map config (which is one of the dict keys) based on the passed index or object name.
         self.map_config_names = list(self.map_params.keys())

@@ -70,6 +70,9 @@ class Camera(object):
                     prev_color = tile.color.toRgb()
                 pose = self.transform(tile.pose.copy())
                 self.painter.drawRect(pose[0],pose[1],tile.size[0],tile.size[1])
+        elif entity.config['type'] in ['prey','predator','food']:
+            pose = self.transform(entity.config['pose'].copy())
+            self.painter.drawPixmap(pose[0],pose[1],entity.pixmap)
         
     def update(self):
         '''

@@ -1,5 +1,8 @@
 {
     "object":"wolf",
     "type":"predator",
-    "mass":50
+    "pose":[0,0],
+    "mass":50,
+    "predators":null,
+    "prey":["rabbit"]
 }

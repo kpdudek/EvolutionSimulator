@@ -1,0 +1,8 @@
+{
+    "object":"grass",
+    "type":"food",
+    "pose":[0,0],
+    "energy":50,
+    "predators":["rabbit"],
+    "prey":null
+}

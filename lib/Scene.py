@@ -23,3 +23,6 @@ class Scene(QtWidgets.QWidget):
         self.logger.log(f'Creating map with chunk size: [{x},{y}]')
         self.map = Map(x,y,tile_size=tile_size,config_text=map_config_text)
         self.entities.update({'map':self.map})
+
+        rabbit = Prey('rabbit')
+        self.entities.update({'rab1':rabbit})
