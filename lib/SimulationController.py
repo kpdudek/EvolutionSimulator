@@ -60,7 +60,7 @@ class SimulationController(QMainWindow):
         self.logger.log(f'Loading default simulation...')
 
     def update_map_configs_combobox(self):
-        self.map_config_combobox.addItems(self.canvas.scene.map.map_configs)
+        self.map_config_combobox.addItems(self.canvas.scene.map.map_config_names)
 
     def apply_settings(self):
         '''

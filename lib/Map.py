@@ -46,34 +46,35 @@ class Map(object):
         self.map_config_text = config_text
         self.tile_size = tile_size
         self.tiles = []
-        self.load_configs()
+        self.load_config()
         self.generate_map()
 
-    def load_configs(self):
+    def load_config(self):
         fp = open(f'{self.file_paths.maps_path}configs.json','r')
         self.map_params = json.load(fp)
         fp.close()
-        keys = list(self.map_params.keys())
-        for key in keys:
-            if self.map_params[key]['type'] == 'perlin':
-                self.map_params[key]['noise'] = Noise.generate_perlin_noise(self.chunk_size[0],self.chunk_size[1])
-            elif self.map_params[key]['type'] == 'fractal':
-                self.map_params[key]['noise'] = Noise.generate_fractal_noise_2d((self.chunk_size[0],self.chunk_size[1]),(2,2))
-        self.map_configs = list(self.map_params.keys())
-        self.logger.log(f'Map configs found: {self.map_configs}')
+
+        # Get the name of the map config (which is one of the dict keys) based on the passed index or object name.
+        self.map_config_names = list(self.map_params.keys())
+        if self.map_config_text:
+            self.config_name = self.map_config_text
+        else:
+            self.config_name = self.map_config_names[self.map_config_idx]
+
+        # Generate the height map based on which type of noise that map config uses.
+        if self.map_params[self.config_name]['type'] == 'perlin':
+            self.map_params[self.config_name]['noise'] = Noise.generate_perlin_noise(self.chunk_size[0],self.chunk_size[1])
+        elif self.map_params[self.config_name]['type'] == 'fractal':
+            self.map_params[self.config_name]['noise'] = Noise.generate_fractal_noise_2d((self.chunk_size[0],self.chunk_size[1]),(2,2))
         
     def generate_map(self):
         pose = np.array([0.0,0.0])
         size = np.array([self.tile_size,self.tile_size])
         color = None
         
-        if self.map_config_text:
-            noise_type = self.map_config_text
-        else:
-            noise_type = self.map_configs[self.map_config_idx]
-        noise = self.map_params[noise_type]['noise']
-        land_cutoff = self.map_params[noise_type]['land_cutoff']
-        sand_cutoff = self.map_params[noise_type]['sand_cutoff']
+        noise = self.map_params[self.config_name]['noise']
+        land_cutoff = self.map_params[self.config_name]['land_cutoff']
+        sand_cutoff = self.map_params[self.config_name]['sand_cutoff']
         for x in range(self.chunk_size[0]):
             for y in range(self.chunk_size[1]):
                 if noise[x,y] >= land_cutoff:
