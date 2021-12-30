@@ -3,13 +3,14 @@
 from PyQt5.QtCore import Qt, QTimer, pyqtSignal
 from PyQt5.QtWidgets import QLabel
 from PyQt5 import QtGui
+from numpy.lib.shape_base import _tile_dispatcher
 
 from lib.Camera import Camera
 from lib.Logger import Logger
 from lib.Scene import Scene
 
 import numpy as np
-import time
+import time, math
 
 class Canvas(QLabel):
     '''
@@ -76,6 +77,19 @@ class Canvas(QLabel):
         if self.painter.isActive():
             self.painter.end()
         self.close()
+
+    def mousePressEvent(self, e):
+        button = e.button()
+        pose = np.array([e.x(),e.y()])
+        self.logger.log(f'Mouse press ({button}) at: [{pose[0]},{pose[1]}]')
+
+        # Must convert the camera frame point to the scene
+        pose_t = self.camera.transform(pose,parent_frame='scene',child_frame='camera')
+        tile_press = np.array([0,0])
+        tile_press[0] = math.floor(pose_t[0]/self.scene.map.tile_size)
+        tile_press[1] = math.floor(pose_t[1]/self.scene.map.tile_size)
+
+        self.logger.log(f'Tile selected: [{tile_press[0]},{tile_press[1]}]')
     
     def keyPressEvent(self, event):
         key = event.key()              
