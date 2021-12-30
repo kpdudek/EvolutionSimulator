@@ -52,7 +52,8 @@ class Canvas(QLabel):
 
     def resize_canvas(self,width,height):
         if isinstance(self.painter,QtGui.QPainter):
-            self.painter.end()
+            if self.painter.isActive():
+                self.painter.end()
 
         self.frame_size = np.array([width,height])
         self.canvas_pixmap = QtGui.QPixmap(self.frame_size[0],self.frame_size[1])
