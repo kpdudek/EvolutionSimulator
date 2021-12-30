@@ -1,7 +1,7 @@
 {
     "object":"wolf",
     "type":"predator",
-    "pose":[0,0],
+    "pose":[350,350],
     "mass":50,
     "predators":null,
     "prey":["rabbit"]

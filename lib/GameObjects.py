@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 
 from PyQt5 import QtGui
+from PyQt5.QtCore import QTimer
 from PyQt5.QtWidgets import QWidget
 
 from lib.Logger import Logger,FilePaths
 from lib.PaintUtils import PaintUtils
 
 import numpy as np
-import os,json
+import os,json,random
 
 class Entity(QWidget):
     def __init__(self,object_name):

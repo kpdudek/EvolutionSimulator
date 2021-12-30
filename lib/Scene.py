@@ -26,3 +26,6 @@ class Scene(QtWidgets.QWidget):
 
         rabbit = Prey('rabbit')
         self.entities.update({'rab1':rabbit})
+
+        wolf = Predator('wolf')
+        self.entities.update({'wol1':wolf})
