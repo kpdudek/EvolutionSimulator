@@ -1,12 +1,9 @@
 #!/usr/bin/env python3
 
 from PyQt5 import QtCore
-from PyQt5.QtGui import QPolygonF
-from PyQt5.QtCore import QPointF
 
 from lib.PaintUtils import PaintUtils
 from lib.Logger import Logger
-import lib.Geometry as geom
 import lib.Errors as errors
 import numpy as np
 

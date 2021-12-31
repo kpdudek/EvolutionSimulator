@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import random
 import numpy as np
+import random
 
 def shuffle(tab):
     for e in reversed(range(0,len(tab)-1)):

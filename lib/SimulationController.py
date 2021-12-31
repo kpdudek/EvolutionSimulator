@@ -1,13 +1,10 @@
 #!/usr/bin/env python3
 
-from PyQt5.QtWidgets import QWidget, QMainWindow
-from PyQt5.QtCore import Qt, QTimer, pyqtSignal
-from PyQt5 import QtGui, uic
+from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtCore import Qt, pyqtSignal
+from PyQt5 import uic
 
 from lib.Logger import FilePaths, Logger
-from lib.Map import Map
-
-import numpy as np
 
 class SimulationController(QMainWindow):
     '''

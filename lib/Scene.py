@@ -2,11 +2,10 @@
 
 from PyQt5 import QtCore, QtWidgets
 
-from lib.Logger import Logger, FilePaths
 from lib.GameObjects import Predator,Prey
+from lib.Logger import Logger, FilePaths
 from lib.Map import Map
 
-from numpy.ctypeslib import ndpointer
 from random import randint
 import numpy as np
 

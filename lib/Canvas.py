@@ -3,14 +3,13 @@
 from PyQt5.QtCore import Qt, QTimer, pyqtSignal
 from PyQt5.QtWidgets import QLabel
 from PyQt5 import QtGui
-from numpy.lib.shape_base import _tile_dispatcher
 
 from lib.Camera import Camera
 from lib.Logger import Logger
 from lib.Scene import Scene
 
 import numpy as np
-import time, math
+import time
 
 class Canvas(QLabel):
     '''
