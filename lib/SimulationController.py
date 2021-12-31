@@ -69,6 +69,7 @@ class SimulationController(QMainWindow):
         self.set_map_config()
         self.set_fps_logging()
         self.set_fps_display()
+        self.set_border_display()
 
     ####################################################################################################
     #   Settings Methods:
@@ -96,3 +97,9 @@ class SimulationController(QMainWindow):
             self.canvas.camera.display_fps_overlay = True
         else:
             self.canvas.camera.display_fps_overlay = False
+
+    def set_border_display(self):
+        if self.display_borders_checkbox.isChecked():
+            self.canvas.borders_visible(True)
+        else:
+            self.canvas.borders_visible(False)

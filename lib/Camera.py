@@ -18,6 +18,7 @@ class Camera(object):
         self.painter = painter
         self.scene = scene
         self.zoom_level = 1.0
+        self.draw_borders = False
 
         self.frames = {
             'camera':np.array([0.0,0.0]),
@@ -63,16 +64,21 @@ class Camera(object):
     def paint_entity(self,entity):
         if entity.config['type'] == 'map':
             prev_color = None
-            for tile in entity.tiles:
-                if tile.color.toRgb() != prev_color:
-                    self.painter.setPen(tile.pen)
-                    self.painter.setBrush(tile.brush)
-                    prev_color = tile.color.toRgb()
-                pose = self.transform(tile.pose.copy())
-                self.painter.drawRect(pose[0],pose[1],tile.size[0],tile.size[1])
+            for row in entity.tiles:
+                for tile in row:
+                    if tile.color.toRgb() != prev_color:
+                        self.painter.setPen(tile.pen)
+                        self.painter.setBrush(tile.brush)
+                        prev_color = tile.color.toRgb()
+                    pose = self.transform(tile.pose.copy())
+                    self.painter.drawRect(pose[0],pose[1],tile.size[0],tile.size[1])
         elif entity.config['type'] in ['prey','predator','food']:
             pose = self.transform(entity.config['pose'].copy())
             self.painter.drawPixmap(pose[0],pose[1],entity.pixmap)
+            if self.draw_borders:
+                self.painter.setPen(entity.pen)
+                self.painter.setBrush(entity.brush)
+                self.painter.drawRect(pose[0],pose[1],entity.bounding_size[0],entity.bounding_size[1])
         
     def update(self):
         '''

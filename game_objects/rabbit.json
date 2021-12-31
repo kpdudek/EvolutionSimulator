@@ -1,7 +1,9 @@
 {
     "object":"rabbit",
     "type":"prey",
-    "pose":[300,300],
+    "png_file":"rabbit.png",
+    "pixmap":null,
+    "pose":[0,0],
     "mass":2.5,
     "predators":["wolf"],
     "prey":["grass"]

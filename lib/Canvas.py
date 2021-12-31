@@ -30,7 +30,7 @@ class Canvas(QLabel):
         self.is_shutting_down = False
         self.keys_pressed = []
         self.debug_mode = False
-        self.fps = 30.0
+        self.fps = 50.0
         self.loop_fps = -1.0
         self.painter = None
         
@@ -49,6 +49,14 @@ class Canvas(QLabel):
 
         self.setFocusPolicy(Qt.StrongFocus)
         self.show()
+
+    def borders_visible(self,bool):
+        if bool:
+            self.scene.map.tile_borders_visible(True)
+            self.camera.draw_borders = True
+        else:
+            self.scene.map.tile_borders_visible(False)
+            self.camera.draw_borders = False
 
     def resize_canvas(self,width,height):
         if isinstance(self.painter,QtGui.QPainter):
@@ -84,13 +92,11 @@ class Canvas(QLabel):
         pose = np.array([e.x(),e.y()])
         self.logger.log(f'Mouse press ({button}) at: [{pose[0]},{pose[1]}]')
 
-        # Must convert the camera frame point to the scene
+        # Must convert the camera frame point to the scene and find which tile the mouse collides with
         pose_t = self.camera.transform(pose,parent_frame='scene',child_frame='camera')
-        tile_press = np.array([0,0])
-        tile_press[0] = math.floor(pose_t[0]/self.scene.map.tile_size)
-        tile_press[1] = math.floor(pose_t[1]/self.scene.map.tile_size)
-
+        tile_press,idx = self.scene.map.tile_at(pose_t)
         self.logger.log(f'Tile selected: [{tile_press[0]},{tile_press[1]}]')
+        self.logger.log(f'Tile index: {idx}')
     
     def keyPressEvent(self, event):
         key = event.key()              
@@ -125,6 +131,8 @@ class Canvas(QLabel):
 
     def fps_log(self):
         self.logger.log(f'Max FPS: {self.loop_fps}')
+        if self.loop_fps<self.fps:
+            self.logger.log("FPS has dropped below the set value.",color='y')
 
     def game_loop(self):
         tic = time.time()

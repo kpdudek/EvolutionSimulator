@@ -1,5 +1,6 @@
 Simulation controller
 - Add an option to save the current config as default
+- Separate UI into simulation creator, display settings (can be updated during a simulation), ...
 
 Generate rabbits
 - size and color determine attractiveness
@@ -16,6 +17,8 @@ Generate terrain
 - Add saving capability
 - Merge similar tiles into one polygon to reduce number of draw calls
 - Stop generating Noise for every map config. Only do it for the selected map.
+- Generate a graph over movable tiles, so entites can use it for planning
+    - Implement A* search
 
 Game Rules:
 - Moving costs energy (in units of calories)

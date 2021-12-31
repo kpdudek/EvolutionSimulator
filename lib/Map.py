@@ -9,7 +9,7 @@ import lib.Errors as errors
 from lib import Noise
 
 import numpy as np
-import os, json
+import math, json
 
 class Tile():
     def __init__(self,pose,size,color,terrain_type,moisture):
@@ -21,13 +21,21 @@ class Tile():
         self.terrain_type = terrain_type
         self.moisture_content = moisture
 
+        # Pen and Brush for the camera to use
         self.pen = QtGui.QPen()
         self.pen.setWidth(1)
         self.brush = QtGui.QBrush()
         self.brush.setStyle(Qt.SolidPattern)
-
         self.pen.setColor(self.color)
         self.brush.setColor(self.color)
+
+        # Roadmap data
+        self.idx = None
+        self.coord = self.pose.copy()+(self.size.copy()[0]/2)
+        self.neighbors = []
+        self.neighbors_cost = []
+        self.backpointer = None
+        self.backpointer_cost = None
 
 class Map(object):
     '''
@@ -45,7 +53,7 @@ class Map(object):
         self.map_config_idx = idx
         self.map_config_text = config_text
         self.tile_size = tile_size
-        self.tiles = []
+        self.tiles = np.empty([x,y],dtype=Tile)
         self.load_config()
         self.generate_map()
 
@@ -89,7 +97,36 @@ class Map(object):
                     terrain_type = 'water'
                     moisture = 1.0
                 tile = Tile(pose.copy(),size.copy(),color,terrain_type,moisture)
-                self.tiles.append(tile)
+                self.tiles[x,y] = tile
                 pose[1] += self.tile_size
             pose[1] = 0.0
             pose[0] += self.tile_size
+
+    def tile_at(self,coord):
+        '''
+            Accepts a coordinate in world space and returns the corresponding tile index
+            Params:
+                coord (numpy.ndarray): A 1x2 numpy array of ints corresponding to screen coordinates in pixel space.
+            Returns:
+                tile_presss (numpy.ndarray): A 1x2 numpy array of ints corresponding to tile index coordinates in range [0,chunk_size]
+                idx (int): The 1D index for the selected tile in the self.tiles list.
+        '''
+        tile_press = np.array([0,0])
+        tile_press[0] = math.floor(coord[0]/self.tile_size)
+        tile_press[1] = math.floor(coord[1]/self.tile_size)
+
+        x,y = tile_press
+        if x == 0:
+            idx = y
+        else:
+            idx = y + x*self.chunk_size[1]
+
+        return tile_press,idx
+
+    def tile_borders_visible(self,bool):
+        for row in self.tiles:
+            for tile in row:
+                if bool:
+                    tile.pen.setColor(QtGui.QColor('black'))
+                else:
+                    tile.pen.setColor(tile.color)

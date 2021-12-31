@@ -7,6 +7,7 @@ from lib.GameObjects import Predator,Prey
 from lib.Map import Map
 
 from numpy.ctypeslib import ndpointer
+from random import randint
 import numpy as np
 
 class Scene(QtWidgets.QWidget):
@@ -24,8 +25,12 @@ class Scene(QtWidgets.QWidget):
         self.map = Map(x,y,tile_size=tile_size,config_text=map_config_text)
         self.entities.update({'map':self.map})
 
+        random_pose = np.array([randint(0,x)*tile_size,randint(0,y)*tile_size])
         rabbit = Prey('rabbit')
+        rabbit.teleport(random_pose)
         self.entities.update({'rab1':rabbit})
 
+        random_pose = np.array([randint(0,x)*tile_size,randint(0,y)*tile_size])
         wolf = Predator('wolf')
+        wolf.teleport(random_pose)
         self.entities.update({'wol1':wolf})
