@@ -1,5 +1,5 @@
 # EvolutionSimulator
-Simulating a predator prey relationship in a 2D world using PyQt5. 
+Simulating an ecosystem in a 2D grid world using PyQt5. 
 
 Inspiration for this project came from watching:
 
@@ -9,8 +9,8 @@ Inspiration for this project came from watching:
 
 ## Installation
 The supported platforms are currently Linux and Windows 10.
-To run the simulation you will need to install:
-* python3
+To run the simulation you will need to have the following installed:
+* python3 (>3.6)
 * pip3
 * numpy
 * PyQt5
@@ -44,8 +44,10 @@ A window will open with a randomly generated map. To adjust the simulation setti
 ![Simulation Launched](graphics/simulation_launched.png)
 
 ## Controls
-Camera Pan : WSAD, right mouse button and drag
+**Select Tile:** left mouse button
 
-Center Camera : C
+**Camera Pan:** WSAD, right mouse button and drag
 
-Open Simulation Controller : 1
+**Center Camera:** C
+
+**Open Simulation Controller:** 1
