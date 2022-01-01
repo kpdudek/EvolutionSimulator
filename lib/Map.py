@@ -8,6 +8,7 @@ from lib.PaintUtils import PaintUtils
 import lib.Errors as errors
 from lib import Noise
 
+from random import randint
 import numpy as np
 import math, json
 
@@ -30,8 +31,6 @@ class Tile():
         self.brush.setColor(self.color)
 
         # Roadmap data
-        self.idx = None
-        self.coord = self.pose.copy()+(self.size.copy()[0]/2)
         self.neighbors = []
         self.neighbors_cost = []
         self.backpointer = None
@@ -54,8 +53,10 @@ class Map(object):
         self.map_config_text = config_text
         self.tile_size = tile_size
         self.tiles = np.empty([x,y],dtype=Tile)
+
         self.load_config()
         self.generate_map()
+        self.set_neighbors()
 
     def load_config(self):
         with open(f'{self.file_paths.maps_path}configs.json','r') as fp:
@@ -102,6 +103,27 @@ class Map(object):
             pose[1] = 0.0
             pose[0] += self.tile_size
 
+    def set_neighbors(self,invalid_terrain=['water']):
+        # For every tile in the map
+        for r in range(self.chunk_size[0]):
+            for c in range(self.chunk_size[1]):
+
+                # For every neighbor of that tile, diagonals included
+                for nx in range(-1,2):
+                    for ny in range(-1,2):
+                
+                        # Ignore the current tile (r,c), when both offsets are zero
+                        if nx == 0 and ny == 0:
+                            pass
+                        # Check if the offsets are in the bounds of the map (0 < idx < chunk size)
+                        elif r+nx >= 0 and r+nx < self.chunk_size[0] and c+ny >= 0 and c+ny < self.chunk_size[1]:
+                            if self.tiles[r+nx,c+ny].terrain_type not in invalid_terrain:
+                                self.tiles[r,c].neighbors.append((r+nx,c+ny))
+                                if abs(nx) == 1 and abs(ny) == 1:
+                                    self.tiles[r,c].neighbors_cost.append(1.5)
+                                else:
+                                    self.tiles[r,c].neighbors_cost.append(1)
+
     def tile_at(self,coord):
         '''
             Accepts a coordinate in world space and returns the corresponding tile index
@@ -109,19 +131,25 @@ class Map(object):
                 coord (numpy.ndarray): A 1x2 numpy array of ints corresponding to screen coordinates in pixel space.
             Returns:
                 tile_presss (numpy.ndarray): A 1x2 numpy array of ints corresponding to tile index coordinates in range [0,chunk_size]
-                idx (int): The 1D index for the selected tile in the self.tiles list.
         '''
-        tile_press = np.array([0,0])
-        tile_press[0] = math.floor(coord[0]/self.tile_size)
-        tile_press[1] = math.floor(coord[1]/self.tile_size)
-
-        x,y = tile_press
-        if x == 0:
-            idx = y
+        x = math.floor(coord[0]/self.tile_size)
+        y = math.floor(coord[1]/self.tile_size)
+        if x < self.chunk_size[0] and x >= 0 and y < self.chunk_size[1] and y >= 0:
+            return (x,y)
         else:
-            idx = y + x*self.chunk_size[1]
+            return None
 
-        return tile_press,idx
+    def random_tile(self,invalid_tiles=['water']):
+        '''
+            Get a random tile in the map.
+        '''
+        x = randint(0,self.chunk_size[0]-1)
+        y = randint(0,self.chunk_size[1]-1)
+        while self.tiles[x,y].terrain_type in invalid_tiles:
+            x = randint(0,self.chunk_size[0]-1)
+            y = randint(0,self.chunk_size[1]-1)
+        random_pose = np.array([x*self.tile_size,y*self.tile_size])
+        return random_pose,(x,y)
 
     def tile_borders_visible(self,bool):
         for row in self.tiles:

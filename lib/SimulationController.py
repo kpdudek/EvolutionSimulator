@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from PyQt5.QtWidgets import QMainWindow
+from PyQt5.QtWidgets import QMainWindow, QCheckBox
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5 import uic
 
@@ -26,7 +26,12 @@ class SimulationController(QMainWindow):
         self.action_save_default.triggered.connect(self.save_as_default)
         self.action_load_default.triggered.connect(self.load_default)
 
+        for widget in self.display_settings_frame.children():
+            if isinstance(widget,QCheckBox):
+                widget.toggled.connect(self.update_display_settings)
+
         self.apply_settings()
+        self.update_display_settings()
         self.update_map_configs_combobox()
 
     def keyPressEvent(self, event):
@@ -59,11 +64,25 @@ class SimulationController(QMainWindow):
     def update_map_configs_combobox(self):
         self.map_config_combobox.addItems(self.canvas.scene.map.map_config_names)
 
+    def validate_spinboxes(self):
+        x = self.x_map_size_spinbox.value()
+        if x%2 != 0:
+            x+=1
+            self.x_map_size_spinbox.setValue(x)
+        y = self.y_map_size_spinbox.value()
+        if y%2 != 0:
+            y+=1
+            self.y_map_size_spinbox.setValue(y)
+
     def apply_settings(self):
         '''
             Generate a new simulation by calling each settings method
         '''
+        self.validate_spinboxes()
         self.set_map_config()
+        self.update_display_settings()
+    
+    def update_display_settings(self):
         self.set_fps_logging()
         self.set_fps_display()
         self.set_border_display()
@@ -74,6 +93,7 @@ class SimulationController(QMainWindow):
     #       The apply_settings() method calls each of these methods to generate a new simulation.
     ####################################################################################################
     def set_map_config(self):
+        self.canvas.scene.map = None
         x = self.x_map_size_spinbox.value()
         y = self.y_map_size_spinbox.value()
         config_name = self.map_config_combobox.currentText()

@@ -31,7 +31,7 @@ class Camera(object):
         self.frames['scene'] = pose
     
     def translate(self,vec):
-        self.frames['scene'] = self.frames['scene'] + -1*vec
+        self.frames['scene'] = self.frames['scene'].copy() + -1*vec
 
     def zoom(self,multiplier):
         self.zoom_level = multiplier
@@ -76,10 +76,18 @@ class Camera(object):
                 self.painter.setPen(entity.pen)
                 self.painter.setBrush(entity.brush)
                 self.painter.drawRect(pose[0],pose[1],entity.bounding_size[0],entity.bounding_size[1])
+            if isinstance(entity.path,np.ndarray):
+                self.paint_utils.set_color(self.painter,'black',True,width=3)
+                r,c = entity.path.shape
+                for idx in range(0,c-1):
+                    pose1 = self.transform(entity.path[:,idx])
+                    pose2 = self.transform(entity.path[:,idx+1])
+                    self.painter.drawLine(pose1[0],pose1[1],pose2[0],pose2[1])
         
     def update(self):
         '''
             Draws all entities in the scene.
         '''
+        self.paint_entity(self.scene.map)
         for entity in self.scene.entities.values():
             self.paint_entity(entity)

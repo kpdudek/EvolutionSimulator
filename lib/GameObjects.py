@@ -18,6 +18,7 @@ class Entity(QWidget):
         self.paint_utils = PaintUtils()
         
         self.config = {}
+        self.path = None
         self.load_config(object_name)
     
     def load_config(self,config_name):
@@ -57,6 +58,7 @@ class Entity(QWidget):
 class Predator(Entity):
     def __init__(self,object_name):
         super().__init__(object_name)
+        self.hunting = None # Prey object that this predator is currently hunting
 
 class Prey(Entity):
     def __init__(self,object_name):

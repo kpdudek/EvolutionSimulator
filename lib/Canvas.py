@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 from PyQt5.QtCore import Qt, QTimer, pyqtSignal
-from PyQt5.QtWidgets import QLabel
+from PyQt5.QtWidgets import QLabel, QApplication
 from PyQt5 import QtGui
 
 from lib.Camera import Camera
@@ -87,20 +87,47 @@ class Canvas(QLabel):
         self.close()
 
     def mousePressEvent(self, e):
+        self.button = e.button()
+        pose = np.array([e.x(),e.y()])
+        self.logger.log(f'Mouse press ({self.button}) at: [{pose[0]},{pose[1]}]')
+
+        if self.button == 1: # Left click
+            # Must convert the camera frame point to the scene and find which tile the mouse collides with
+            pose_t = self.camera.transform(pose,parent_frame='scene',child_frame='camera')
+            tile_idx = self.scene.map.tile_at(pose_t)
+            if tile_idx:
+                self.logger.log(f'Tile selected: [{tile_idx[0]},{tile_idx[1]}]')
+                self.logger.log(f'Tile neighbors: {self.scene.map.tiles[tile_idx].neighbors}')
+            self.scene.spawn_food('grass',np.array(tile_idx)*self.scene.map.tile_size)
+        elif self.button == 2: # Right click
+            pass
+        elif self.button == 4: # Wheel click
+            self.wheel_press_pose = pose
+    
+    def mouseMoveEvent(self, e):
+        pose = np.array([e.x(),e.y()])
+        if self.button == 1: # Left click
+            pass
+        elif self.button == 2: # Right click
+            pass
+        elif self.button == 4: # Wheel click
+            self.camera.translate(pose-self.wheel_press_pose)
+            self.wheel_press_pose = pose
+    
+    def mouseReleaseEvent(self, e):
         button = e.button()
         pose = np.array([e.x(),e.y()])
-        self.logger.log(f'Mouse press ({button}) at: [{pose[0]},{pose[1]}]')
-
-        # Must convert the camera frame point to the scene and find which tile the mouse collides with
-        pose_t = self.camera.transform(pose,parent_frame='scene',child_frame='camera')
-        tile_press,idx = self.scene.map.tile_at(pose_t)
-        self.logger.log(f'Tile selected: [{tile_press[0]},{tile_press[1]}]')
-        self.logger.log(f'Tile index: {idx}')
+        if button == 1: # Left click
+            pass
+        elif button == 2: # Right click
+            pass
+        elif button == 4: # Wheel click
+            self.wheel_press_pose = None
     
     def keyPressEvent(self, event):
         key = event.key()              
         if key == Qt.Key_Escape:
-            self.shutdown()
+            self.closeEvent(0)
         elif key == Qt.Key_1:
             if self.simulation_controller.isVisible():
                 self.simulation_controller.hide()
@@ -137,6 +164,7 @@ class Canvas(QLabel):
         tic = time.time()
         self.process_keys()
         self.camera.clear_display()
+        self.scene.update()
         self.camera.update()
         self.camera.fps_overlay(self.loop_fps)
         self.repaint()

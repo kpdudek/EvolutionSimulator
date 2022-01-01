@@ -6,14 +6,14 @@ import time, math
 import numpy as np
 
 class AStar(object):
-    def __init__(self,roadmap,debug_mode):
+    def __init__(self,map,debug_mode=False):
         self.debug_mode = debug_mode
-        self.roadmap = roadmap
+        self.map = map
         self.queue = PriorityQueue()
         self.logger = Logger()
     
-    def reset(self,roadmap):
-        self.roadmap = roadmap
+    def reset(self,map):
+        self.map = map
         self.queue = PriorityQueue()
 
     def get_plan(self,start_idx,goal_idx):
@@ -22,11 +22,11 @@ class AStar(object):
         '''
         idx_closed = []
         self.queue.insert(start_idx,0)
-        self.roadmap.roadmap[start_idx].backpointer_cost = 0
+        self.map.tiles[start_idx].backpointer_cost = 0
 
         self.logger.log(f"Plan requested from node: [{start_idx}] to [{goal_idx}]")
-        sx,sy = self.roadmap.roadmap[start_idx].coord
-        gx,gy = self.roadmap.roadmap[goal_idx].coord
+        sx,sy = self.map.tiles[start_idx].pose
+        gx,gy = self.map.tiles[goal_idx].pose
         self.logger.log(f"\tCoordinates are: ({sx},{sy}) ({gx},{gy})")
 
         tic = time.time()
@@ -58,56 +58,54 @@ class AStar(object):
 
     def expand_list(self,idx_next,idx_closed):
         neighbors = []
-        
-        neighbors = self.roadmap.roadmap[idx_next].neighbors.copy()
+        neighbors = self.map.tiles[idx_next].neighbors.copy()
         for idx in idx_closed:
-            try:
+            if idx in neighbors:
                 neighbors.remove(idx)
-            except:
-                pass
-        try:
+        if idx_next in neighbors:
             neighbors.remove(idx_next)
-        except:
-            pass
 
         return neighbors
     
     def expand_node(self,idx_next,goal_idx,neighbor):
-        backpointer_cost = self.roadmap.roadmap[idx_next].backpointer_cost
+        backpointer_cost = self.map.tiles[idx_next].backpointer_cost
         heuristic = self.graph_heuristic(neighbor,goal_idx)
-        idx_cost = self.roadmap.roadmap[idx_next].neighbors.index(neighbor)
-        step_cost = self.roadmap.roadmap[idx_next].backpointer_cost + self.roadmap.roadmap[idx_next].neighbors_cost[idx_cost]
+        idx_cost = self.map.tiles[idx_next].neighbors.index(neighbor)
+        step_cost = self.map.tiles[idx_next].backpointer_cost + self.map.tiles[idx_next].neighbors_cost[idx_cost]
 
         if self.queue.is_member(neighbor):
             if self.debug_mode:
                 self.logger.log(f'\tNeighbor {neighbor}: is already in the queue')
-            if step_cost < self.roadmap.roadmap[neighbor].backpointer_cost:
-                self.roadmap.roadmap[neighbor].backpointer_cost = step_cost
-                self.roadmap.roadmap[neighbor].backpointer = idx_next
+            if step_cost < self.map.tiles[neighbor].backpointer_cost:
+                self.map.tiles[neighbor].backpointer_cost = step_cost
+                self.map.tiles[neighbor].backpointer = idx_next
                 if self.debug_mode:
                     self.logger.log(f'\tNeighbor {neighbor}: was reassigned a lower backpointer')
         else:
-            self.roadmap.roadmap[neighbor].backpointer_cost = step_cost
-            self.roadmap.roadmap[neighbor].backpointer = idx_next
+            self.map.tiles[neighbor].backpointer_cost = step_cost
+            self.map.tiles[neighbor].backpointer = idx_next
             self.queue.insert(neighbor, step_cost+heuristic)
 
     def graph_heuristic(self,idx_start,idx_end):
-        start = self.roadmap.roadmap[idx_start].coord
-        end = self.roadmap.roadmap[idx_end].coord
+        start = self.map.tiles[idx_start].pose
+        end = self.map.tiles[idx_end].pose
 
         return math.pow((math.pow(start[0]-end[0],2) + math.pow(start[1]-end[1],2)),.5)
 
     def get_path(self,start_idx,goal_idx):
-        path = self.roadmap.roadmap[goal_idx].coord
+        path = self.map.tiles[goal_idx].pose.reshape(2,1)
         if start_idx==goal_idx:
             return path
 
-        idx_current = self.roadmap.roadmap[goal_idx].backpointer
+        idx_current = self.map.tiles[goal_idx].backpointer
+        if idx_current == None:
+            self.logger.log("No path found!")
+            return None
 
         while idx_current != start_idx:
-            path = np.append(path,self.roadmap.roadmap[idx_current].coord,axis=1)
-            idx_current = self.roadmap.roadmap[idx_current].backpointer
-        path = np.append(path,self.roadmap.roadmap[start_idx].coord,axis=1)
+            path = np.append(path,self.map.tiles[idx_current].pose.reshape(2,1),axis=1)
+            idx_current = self.map.tiles[idx_current].backpointer
+        path = np.append(path,self.map.tiles[start_idx].pose.reshape(2,1),axis=1)
 
         path = np.fliplr(path)
         return path
