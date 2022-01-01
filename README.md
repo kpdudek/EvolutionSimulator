@@ -41,6 +41,8 @@ After installation, launch the simulation by navigating to the `EvolutionSimulat
 ```
 
 A window will open with a randomly generated map. To adjust the simulation settings, press `1` to show the simulation controller.
+![Simulation Launched](graphics/simulation_launched.png)
+
 ## Controls
 Camera Pan : WSAD, right mouse button and drag
 

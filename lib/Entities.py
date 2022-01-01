@@ -24,7 +24,7 @@ class Entity(QWidget):
     
     def load_config(self,config_name):
         # Load the json config into a dictionary
-        with open(f'{self.file_paths.game_objects_path}{config_name}.json','r') as fp:
+        with open(f'{self.file_paths.entities_path}{config_name}.json','r') as fp:
             self.object_params = json.load(fp)
         self.config.update(self.object_params)
 
@@ -34,7 +34,7 @@ class Entity(QWidget):
 
         # Generate a QPixmap from the png file
         png_name = f'{self.object_params["png_file"]}'
-        self.pixmap = QtGui.QPixmap(f'{self.file_paths.game_objects_path}{png_name}')
+        self.pixmap = QtGui.QPixmap(f'{self.file_paths.entities_path}{png_name}')
 
         # Generate a QPen and QRect to display PNG border
         self.pen = QtGui.QPen()

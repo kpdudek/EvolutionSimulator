@@ -9,14 +9,14 @@ class FilePaths(object):
         lib_path = user_path + 'lib\\'
         ui_path = user_path + 'ui\\'
         maps_path = user_path + 'maps\\'
-        game_objects_path = user_path + 'game_objects\\'
+        entities_path = user_path + 'entities\\'
         cc_lib_path = 'CollisionChecker.dll'
     elif sys.platform == 'linux':    
         user_path = str(pathlib.Path().absolute()) + '/'
         lib_path = user_path + 'lib/'
         ui_path = user_path + 'ui/'
         maps_path = user_path + 'maps/'
-        game_objects_path = user_path + 'game_objects/'
+        entities_path = user_path + 'entities/'
         cc_lib_path = 'CollisionChecker.so'
     else:
         raise Error('OS not recognized!')
