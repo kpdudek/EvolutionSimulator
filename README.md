@@ -1,13 +1,22 @@
 # EvolutionSimulator
-Simulating a predator prey relationship in a 2D world using PyQt5.
+Simulating a predator prey relationship in a 2D world using PyQt5. 
+
+Inspiration for this project came from watching:
+
+* Sebastian Lague's [Coding Adventure: Simulating an Ecosystem
+](https://www.youtube.com/watch?v=r_It_X7v-1E)
+* Primer's [Simulating Natural Selection](https://www.youtube.com/watch?v=0ZGbIKd0XrM)
 
 ## Installation
-To run the game you will need to install:
+The supported platforms are currently Linux and Windows 10.
+To run the simulation you will need to install:
 * python3
 * pip3
 * numpy
 * PyQt5
 * git (reccomended)
+
+If you would prefer not to install git and clone the repo, you can download the files from the [main repository webpage](https://github.com/kpdudek/EvolutionSimulator) by selecing the green `Code` and then `Download ZIP`.
 
 #### *Ubuntu 18.04:*
 ```
@@ -25,15 +34,15 @@ git clone https://github.com/kpdudek/EvolutionSimulator.git
 pip3 install PyQt5 numpy
 ```
 
-## Game Play
-After installation, launch the game by navigating to the `EvolutionSimulator` repo you just cloned (or downloaded) and then executing the `main.py` file as follows:
+## Running the Simulation
+After installation, launch the simulation by navigating to the `EvolutionSimulator` repo you just cloned (or downloaded) and then executing the `main.py` file as follows:
 ```
 /path/to/EvolutionSimulator> python3 main.py 
 ```
 
 A window will open with a randomly generated map. To adjust the simulation settings, press `1` to show the simulation controller.
 ## Controls
-Camera Pan : WSAD
+Camera Pan : WSAD, middle mouse button and drag
 
 Reset Camera : R
 
