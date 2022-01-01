@@ -19,6 +19,7 @@ class Entity(QWidget):
         
         self.config = {}
         self.path = None
+        self.path_idx = None
         self.load_config(object_name)
     
     def load_config(self,config_name):
