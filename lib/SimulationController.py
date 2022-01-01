@@ -45,6 +45,7 @@ class SimulationController(QMainWindow):
     def showEvent(self, e):
         self.logger.log('Open signal received.')
         self.is_shutting_down = False
+        self.setFocus()
 
     def closeEvent(self, e):
         if not self.is_shutting_down:

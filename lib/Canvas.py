@@ -126,8 +126,9 @@ class Canvas(QLabel):
             self.wheel_press_pose = None
     
     def keyPressEvent(self, event):
-        key = event.key()              
+        key = event.key()
         if key == Qt.Key_Escape:
+            self.logger.log(f'Sending shutdown signal...')
             self.closeEvent(0)
         elif key == Qt.Key_1:
             if self.simulation_controller.isVisible():
