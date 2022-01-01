@@ -44,8 +44,6 @@ A window will open with a randomly generated map. To adjust the simulation setti
 ## Controls
 Camera Pan : WSAD, right mouse button and drag
 
-Reset Camera : R
-
 Center Camera : C
 
 Open Simulation Controller : 1

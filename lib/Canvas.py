@@ -155,8 +155,6 @@ class Canvas(QLabel):
                 self.camera.translate(np.array([0.0,cam_speed]))
             elif key == Qt.Key_S:
                 self.camera.translate(np.array([0.0,-cam_speed]))
-            elif key == Qt.Key_R:
-                self.camera.reset()
 
     def fps_log(self):
         self.logger.log(f'Max FPS: {self.loop_fps}')
