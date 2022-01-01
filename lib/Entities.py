@@ -59,12 +59,20 @@ class Entity(QWidget):
 class Predator(Entity):
     def __init__(self,object_name):
         super().__init__(object_name)
-        self.hunting = None # Prey object that this predator is currently hunting
+
+    def update(self):
+        pass
 
 class Prey(Entity):
     def __init__(self,object_name):
         super().__init__(object_name)
+    
+    def update(self):
+        pass
 
 class Food(Entity):
     def __init__(self,object_name):
         super().__init__(object_name)
+    
+    def update(self):
+        pass

@@ -81,6 +81,7 @@ class SimulationController(QMainWindow):
         self.validate_spinboxes()
         self.set_map_config()
         self.update_display_settings()
+        self.canvas.camera.reset()
     
     def update_display_settings(self):
         self.set_fps_logging()
@@ -97,11 +98,17 @@ class SimulationController(QMainWindow):
         x = self.x_map_size_spinbox.value()
         y = self.y_map_size_spinbox.value()
         config_name = self.map_config_combobox.currentText()
-        if x%2 != 0 or y%2 != 0:
-            self.logger.log(f'Map size must be multiple of 2!',color='r')
-            return
         tile_size = self.tile_size_spinbox.value()
-        self.canvas.scene.initialize_scene(config_name,tile_size=tile_size,size=(x,y))
+        food_count = self.food_count_slider.value()
+        prey_count = self.prey_count_slider.value()
+        predator_count = self.predator_count_slider.value()
+        self.canvas.scene.initialize_scene(
+                                            config_name,
+                                            tile_size=tile_size,
+                                            size=(x,y),
+                                            food_count=food_count,
+                                            prey_count=prey_count,
+                                            predator_count=predator_count)
 
     def set_fps_logging(self):
         if self.log_fps_checkbox.isChecked():

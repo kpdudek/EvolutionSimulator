@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>230</width>
-    <height>514</height>
+    <width>229</width>
+    <height>652</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -45,7 +45,7 @@
             </property>
            </widget>
           </item>
-          <item row="11" column="0" colspan="2">
+          <item row="17" column="0" colspan="2">
            <widget class="QPushButton" name="create_button">
             <property name="font">
              <font>
@@ -65,11 +65,11 @@
              </font>
             </property>
             <property name="text">
-             <string>Map Size:</string>
+             <string>Chunk Size (tiles):</string>
             </property>
            </widget>
           </item>
-          <item row="10" column="0" colspan="2">
+          <item row="16" column="0" colspan="2">
            <widget class="Line" name="line">
             <property name="orientation">
              <enum>Qt::Horizontal</enum>
@@ -93,7 +93,7 @@
              </font>
             </property>
             <property name="text">
-             <string>Tile Size:</string>
+             <string>Tile Size (px):</string>
             </property>
            </widget>
           </item>
@@ -126,7 +126,7 @@
              <number>2</number>
             </property>
             <property name="value">
-             <number>38</number>
+             <number>44</number>
             </property>
            </widget>
           </item>
@@ -144,7 +144,112 @@
              <number>2</number>
             </property>
             <property name="value">
-             <number>38</number>
+             <number>44</number>
+            </property>
+           </widget>
+          </item>
+          <item row="7" column="0" colspan="2">
+           <widget class="QLabel" name="label_6">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Food Count (0-100):</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0" colspan="2">
+           <widget class="QSlider" name="food_count_slider">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="singleStep">
+             <number>10</number>
+            </property>
+            <property name="value">
+             <number>40</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+            <property name="tickPosition">
+             <enum>QSlider::NoTicks</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="10" column="0" colspan="2">
+           <widget class="QSlider" name="prey_count_slider">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="value">
+             <number>10</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
+            </property>
+           </widget>
+          </item>
+          <item row="9" column="0" colspan="2">
+           <widget class="QLabel" name="label_7">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Prey Count (0-100):</string>
+            </property>
+           </widget>
+          </item>
+          <item row="11" column="0" colspan="2">
+           <widget class="QLabel" name="label_8">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Predator Count (0-100):</string>
+            </property>
+           </widget>
+          </item>
+          <item row="12" column="0" colspan="2">
+           <widget class="QSlider" name="predator_count_slider">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+            <property name="value">
+             <number>10</number>
+            </property>
+            <property name="orientation">
+             <enum>Qt::Horizontal</enum>
             </property>
            </widget>
           </item>
@@ -171,7 +276,7 @@
              <string>Display borders</string>
             </property>
             <property name="checked">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -197,6 +302,9 @@
             <property name="text">
              <string>Log FPS</string>
             </property>
+            <property name="checked">
+             <bool>true</bool>
+            </property>
            </widget>
           </item>
           <item row="1" column="0">
@@ -210,7 +318,7 @@
              <string>Display FPS</string>
             </property>
             <property name="checked">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -255,7 +363,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>230</width>
+     <width>229</width>
      <height>22</height>
     </rect>
    </property>
@@ -286,6 +394,20 @@
    </property>
   </action>
  </widget>
+ <tabstops>
+  <tabstop>map_config_combobox</tabstop>
+  <tabstop>tile_size_spinbox</tabstop>
+  <tabstop>y_map_size_spinbox</tabstop>
+  <tabstop>x_map_size_spinbox</tabstop>
+  <tabstop>food_count_slider</tabstop>
+  <tabstop>prey_count_slider</tabstop>
+  <tabstop>predator_count_slider</tabstop>
+  <tabstop>create_button</tabstop>
+  <tabstop>log_fps_checkbox</tabstop>
+  <tabstop>display_fps_checkbox</tabstop>
+  <tabstop>display_frames_checkbox</tabstop>
+  <tabstop>display_borders_checkbox</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

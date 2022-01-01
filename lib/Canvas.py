@@ -29,8 +29,8 @@ class Canvas(QLabel):
         self.is_shutting_down = False
         self.keys_pressed = []
         self.debug_mode = False
-        self.fps = 50.0
-        self.loop_fps = -1.0
+        self.fps = 30
+        self.loop_fps = 30.0
         self.painter = None
         
         self.camera = None
@@ -55,21 +55,22 @@ class Canvas(QLabel):
             self.camera.draw_borders = True
         else:
             self.scene.map.tile_borders_visible(False)
-            self.camera.draw_borders = False
+            self.camera.draw_borders = False        
 
     def resize_canvas(self,width,height):
         if isinstance(self.painter,QtGui.QPainter):
             if self.painter.isActive():
                 self.painter.end()
 
-        self.frame_size = np.array([width,height])
-        self.canvas_pixmap = QtGui.QPixmap(self.frame_size[0],self.frame_size[1])
+        self.window_size = np.array([width,height])
+        self.canvas_pixmap = QtGui.QPixmap(self.window_size[0],self.window_size[1])
         self.setPixmap(self.canvas_pixmap)
         self.painter = QtGui.QPainter(self.pixmap())
 
         if isinstance(self.camera,Camera):
             self.camera.painter = self.painter
-            self.camera.frame_size = self.frame_size
+            self.camera.window_size = self.window_size
+            self.camera.reset()
 
     def resizeEvent(self, e):
         self.resize_canvas(e.size().width(),e.size().height())
@@ -98,9 +99,8 @@ class Canvas(QLabel):
             if tile_idx:
                 self.logger.log(f'Tile selected: [{tile_idx[0]},{tile_idx[1]}]')
                 self.logger.log(f'Tile neighbors: {self.scene.map.tiles[tile_idx].neighbors}')
-            self.scene.spawn_food('grass',np.array(tile_idx)*self.scene.map.tile_size)
         elif self.button == 2: # Right click
-            pass
+            self.rmb_press_pose = pose
         elif self.button == 4: # Wheel click
             self.wheel_press_pose = pose
     
@@ -109,9 +109,10 @@ class Canvas(QLabel):
         if self.button == 1: # Left click
             pass
         elif self.button == 2: # Right click
-            pass
+            self.camera.translate(pose-self.rmb_press_pose)
+            self.rmb_press_pose = pose
         elif self.button == 4: # Wheel click
-            self.camera.translate(pose-self.wheel_press_pose)
+            # self.camera.translate(pose-self.wheel_press_pose)
             self.wheel_press_pose = pose
     
     def mouseReleaseEvent(self, e):
@@ -120,7 +121,7 @@ class Canvas(QLabel):
         if button == 1: # Left click
             pass
         elif button == 2: # Right click
-            pass
+            self.rmb_press_pose = None
         elif button == 4: # Wheel click
             self.wheel_press_pose = None
     
@@ -133,6 +134,8 @@ class Canvas(QLabel):
                 self.simulation_controller.hide()
             else:
                 self.simulation_controller.show()
+        elif key == Qt.Key_C:
+            self.camera.reset()
         else:
             if key not in self.keys_pressed:
                 self.keys_pressed.append(key)
@@ -173,4 +176,5 @@ class Canvas(QLabel):
         # Calculate max FPS
         loop_split = toc-tic
         if loop_split > 0.0:
-            self.loop_fps = 1.0/(toc-tic)
+            split_fps = 1.0/(toc-tic)
+            self.loop_fps = (self.loop_fps + split_fps)/2.0

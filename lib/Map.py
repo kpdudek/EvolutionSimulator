@@ -13,7 +13,7 @@ import numpy as np
 import math, json
 
 class Tile():
-    def __init__(self,pose,size,color,terrain_type,moisture):
+    def __init__(self,pose,size,color,terrain_type,moisture,sunlight):
         self.pose = pose
         self.size = size
         if not isinstance(color,QtGui.QColor):
@@ -21,6 +21,7 @@ class Tile():
         self.color = color
         self.terrain_type = terrain_type
         self.moisture_content = moisture
+        self.sunlight = sunlight
 
         # Pen and Brush for the camera to use
         self.pen = QtGui.QPen()
@@ -97,11 +98,14 @@ class Map(object):
                     color = QtGui.QColor(self.paint_utils.colors['water_blue'])
                     terrain_type = 'water'
                     moisture = 1.0
-                tile = Tile(pose.copy(),size.copy(),color,terrain_type,moisture)
+                sunlight = 1.0
+                tile = Tile(pose.copy(),size.copy(),color,terrain_type,moisture,sunlight)
                 self.tiles[x,y] = tile
                 pose[1] += self.tile_size
             pose[1] = 0.0
             pose[0] += self.tile_size
+        
+        self.pix_size = np.array([self.chunk_size[0]*self.tile_size,self.chunk_size[1]*self.tile_size])
 
     def set_neighbors(self,invalid_terrain=['water']):
         # For every tile in the map

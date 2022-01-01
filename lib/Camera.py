@@ -5,17 +5,20 @@ from PyQt5 import QtCore
 from lib.PaintUtils import PaintUtils
 from lib.Logger import Logger
 import lib.Errors as errors
+from lib.Map import Map
+
 import numpy as np
 
 class Camera(object):
-    def __init__(self,frame_size,painter,scene):
+    def __init__(self,window_size,painter,scene):
         self.logger = Logger()
         self.paint_utils = PaintUtils()
-        self.frame_size = frame_size
+        self.window_size = window_size
         self.painter = painter
         self.scene = scene
         self.zoom_level = 1.0
         self.draw_borders = False
+        self.draw_paths = False
 
         self.frames = {
             'camera':np.array([0.0,0.0]),
@@ -25,7 +28,11 @@ class Camera(object):
         self.display_fps_overlay = True
 
     def reset(self):
-        self.teleport(np.zeros((2)))
+        # self.teleport(np.zeros((2)))
+        if isinstance(self.scene.map,Map):
+            pix_size = self.scene.map.pix_size
+            offset = (pix_size - self.window_size.copy())/2
+            self.teleport(offset)
 
     def teleport(self,pose):
         self.frames['scene'] = pose
@@ -51,7 +58,7 @@ class Camera(object):
 
     def clear_display(self):
         self.paint_utils.set_color(self.painter,'light_gray',True)
-        self.painter.drawRect(0,0,self.frame_size[0],self.frame_size[1])
+        self.painter.drawRect(0,0,self.window_size[0],self.window_size[1])
 
     def fps_overlay(self,fps):
         if self.display_fps_overlay:
@@ -76,7 +83,7 @@ class Camera(object):
                 self.painter.setPen(entity.pen)
                 self.painter.setBrush(entity.brush)
                 self.painter.drawRect(pose[0],pose[1],entity.bounding_size[0],entity.bounding_size[1])
-            if isinstance(entity.path,np.ndarray):
+            if isinstance(entity.path,np.ndarray) and self.draw_paths:
                 self.paint_utils.set_color(self.painter,'black',True,width=3)
                 r,c = entity.path.shape
                 for idx in range(0,c-1):
@@ -89,5 +96,6 @@ class Camera(object):
             Draws all entities in the scene.
         '''
         self.paint_entity(self.scene.map)
-        for entity in self.scene.entities.values():
-            self.paint_entity(entity)
+        for entity_type in self.scene.entities.values():
+            for entity in entity_type.values():
+                self.paint_entity(entity)
