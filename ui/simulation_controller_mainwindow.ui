@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>228</width>
-    <height>658</height>
+    <height>627</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -138,7 +138,7 @@
              <number>2</number>
             </property>
             <property name="value">
-             <number>44</number>
+             <number>18</number>
             </property>
            </widget>
           </item>
@@ -159,7 +159,7 @@
              <number>2</number>
             </property>
             <property name="value">
-             <number>44</number>
+             <number>18</number>
             </property>
            </widget>
           </item>
@@ -240,7 +240,7 @@
                 <number>100</number>
                </property>
                <property name="value">
-                <number>10</number>
+                <number>1</number>
                </property>
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
@@ -312,7 +312,7 @@
                 <number>10</number>
                </property>
                <property name="value">
-                <number>40</number>
+                <number>1</number>
                </property>
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
@@ -381,7 +381,7 @@
                 <number>100</number>
                </property>
                <property name="value">
-                <number>10</number>
+                <number>1</number>
                </property>
                <property name="orientation">
                 <enum>Qt::Horizontal</enum>
@@ -403,7 +403,7 @@
           <enum>QFrame::Raised</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
-          <item row="4" column="0">
+          <item row="3" column="0">
            <widget class="QCheckBox" name="display_borders_checkbox">
             <property name="font">
              <font>
@@ -418,18 +418,6 @@
             </property>
            </widget>
           </item>
-          <item row="3" column="0">
-           <widget class="QCheckBox" name="display_frames_checkbox">
-            <property name="font">
-             <font>
-              <pointsize>12</pointsize>
-             </font>
-            </property>
-            <property name="text">
-             <string>Display frames</string>
-            </property>
-           </widget>
-          </item>
           <item row="0" column="0">
            <widget class="QCheckBox" name="log_fps_checkbox">
             <property name="font">
@@ -441,7 +429,7 @@
              <string>Log FPS</string>
             </property>
             <property name="checked">
-             <bool>true</bool>
+             <bool>false</bool>
             </property>
            </widget>
           </item>
@@ -457,6 +445,18 @@
             </property>
             <property name="checked">
              <bool>false</bool>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QCheckBox" name="display_paths_checkbox">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Display paths</string>
             </property>
            </widget>
           </item>
@@ -540,7 +540,6 @@
   <tabstop>create_button</tabstop>
   <tabstop>log_fps_checkbox</tabstop>
   <tabstop>display_fps_checkbox</tabstop>
-  <tabstop>display_frames_checkbox</tabstop>
   <tabstop>display_borders_checkbox</tabstop>
  </tabstops>
  <resources/>

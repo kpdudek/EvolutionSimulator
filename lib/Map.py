@@ -22,6 +22,7 @@ class Tile():
         self.terrain_type = terrain_type
         self.moisture_content = moisture
         self.sunlight = sunlight
+        self.entity = None
 
         # Pen and Brush for the camera to use
         self.pen = QtGui.QPen()

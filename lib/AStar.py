@@ -16,6 +16,13 @@ class AStar(object):
         self.map = map
         self.queue = PriorityQueue()
 
+    def clear_search(self):
+        for row in self.map.tiles:
+            for tile in row:
+                tile.backpointer = None
+                tile.backpointer_cost = None
+        self.queue = PriorityQueue()
+
     def get_plan(self,start_idx,goal_idx):
         '''
             Returns a 2xn array of coordinates
@@ -102,9 +109,14 @@ class AStar(object):
             self.logger.log("No path found!")
             return None
 
+        loop_count = 0
+        loop_max = 1000      
         while idx_current != start_idx:
             path = np.append(path,self.map.tiles[idx_current].pose.reshape(2,1),axis=1)
             idx_current = self.map.tiles[idx_current].backpointer
+            loop_count += 1
+            if loop_count > loop_max:
+                return None
         path = np.append(path,self.map.tiles[start_idx].pose.reshape(2,1),axis=1)
 
         path = np.fliplr(path)

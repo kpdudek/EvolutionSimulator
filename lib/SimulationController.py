@@ -66,6 +66,10 @@ class SimulationController(QMainWindow):
         self.map_config_combobox.addItems(self.canvas.scene.map.map_config_names)
 
     def validate_spinboxes(self):
+        '''
+            This function ensures that the chunk size is a multiple of 2 so that the fractal noise octave
+            is valid.
+        '''
         x = self.x_map_size_spinbox.value()
         if x%2 != 0:
             x+=1
@@ -88,6 +92,7 @@ class SimulationController(QMainWindow):
         self.set_fps_logging()
         self.set_fps_display()
         self.set_border_display()
+        self.set_path_display()
 
     ####################################################################################################
     #   Settings Methods:
@@ -95,7 +100,6 @@ class SimulationController(QMainWindow):
     #       The apply_settings() method calls each of these methods to generate a new simulation.
     ####################################################################################################
     def set_map_config(self):
-        self.canvas.scene.map = None
         x = self.x_map_size_spinbox.value()
         y = self.y_map_size_spinbox.value()
         config_name = self.map_config_combobox.currentText()
@@ -103,6 +107,13 @@ class SimulationController(QMainWindow):
         food_count = self.food_count_slider.value()
         prey_count = self.prey_count_slider.value()
         predator_count = self.predator_count_slider.value()
+        num_entities = food_count + prey_count + predator_count
+        num_tiles = x * y
+        if num_entities > num_tiles:
+            self.logger.log(f"A simualtion was generated with {num_entities} entities but only {num_tiles} tiles!",color='r')
+            return
+        
+        # Clear the Scene and generate a new one based on the parameters         
         self.canvas.scene.initialize_scene(
                                             config_name,
                                             tile_size=tile_size,
@@ -128,3 +139,9 @@ class SimulationController(QMainWindow):
             self.canvas.borders_visible(True)
         else:
             self.canvas.borders_visible(False)
+
+    def set_path_display(self):
+        if self.display_paths_checkbox.isChecked():
+            self.canvas.camera.draw_paths = True
+        else:
+            self.canvas.camera.draw_paths = False

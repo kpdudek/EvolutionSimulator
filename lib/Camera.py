@@ -84,7 +84,10 @@ class Camera(object):
                 self.painter.setBrush(entity.brush)
                 self.painter.drawRect(pose[0],pose[1],entity.bounding_size[0],entity.bounding_size[1])
             if isinstance(entity.path,np.ndarray) and self.draw_paths:
-                self.paint_utils.set_color(self.painter,'black',True,width=3)
+                if entity.config['type'] == 'prey':
+                    self.paint_utils.set_color(self.painter,'black',True,width=3)
+                elif entity.config['type'] == 'predator':
+                    self.paint_utils.set_color(self.painter,'red',True,width=3)
                 r,c = entity.path.shape
                 for idx in range(0,c-1):
                     pose1 = self.transform(entity.path[:,idx])
