@@ -12,7 +12,9 @@ class PaintUtils(object):
             "light_gray":"#a5a5a5",
             "water_blue":"#0000a8",
             "grass_green":"#358d33",
-            "sand":"#f3e48c"
+            "sand":"#f3e48c",
+            "start_pose":"#4cf94c",
+            "goal_pose":"#f10606"
         }
         self.reserved_colors = ['black']
 

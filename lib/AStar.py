@@ -47,7 +47,7 @@ class AStar(object):
 
             if idx_next == goal_idx:
                 toc = time.time()
-                self.logger.log(f'Path found in {toc-tic} seconds!')
+                self.logger.log(f'\tPath found in {toc-tic} seconds!')
                 break
             
             neighbors = self.expand_list(idx_next,idx_closed)
@@ -106,7 +106,7 @@ class AStar(object):
 
         idx_current = self.map.tiles[goal_idx].backpointer
         if idx_current == None:
-            self.logger.log("No path found!")
+            self.logger.log("\tNo path found!")
             return None
 
         loop_count = 0

@@ -93,6 +93,7 @@ class SimulationController(QMainWindow):
         self.set_fps_display()
         self.set_border_display()
         self.set_path_display()
+        self.set_debug_mode()
 
     ####################################################################################################
     #   Settings Methods:
@@ -104,9 +105,9 @@ class SimulationController(QMainWindow):
         y = self.y_map_size_spinbox.value()
         config_name = self.map_config_combobox.currentText()
         tile_size = self.tile_size_spinbox.value()
-        food_count = self.food_count_slider.value()
-        prey_count = self.prey_count_slider.value()
-        predator_count = self.predator_count_slider.value()
+        food_count = self.food_count_spinbox.value()
+        prey_count = self.prey_count_spinbox.value()
+        predator_count = self.predator_count_spinbox.value()
         num_entities = food_count + prey_count + predator_count
         num_tiles = x * y
         if num_entities > num_tiles:
@@ -145,3 +146,11 @@ class SimulationController(QMainWindow):
             self.canvas.camera.draw_paths = True
         else:
             self.canvas.camera.draw_paths = False
+
+    def set_debug_mode(self):
+        if self.debug_mode_checkbox.isChecked():
+            self.canvas.scene.debug_mode = True
+            self.canvas.camera.debug_mode = True
+        else:
+            self.canvas.scene.debug_mode = False
+            self.canvas.camera.debug_mode = False

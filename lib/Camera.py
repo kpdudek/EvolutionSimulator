@@ -28,7 +28,6 @@ class Camera(object):
         self.display_fps_overlay = True
 
     def reset(self):
-        # self.teleport(np.zeros((2)))
         if isinstance(self.scene.map,Map):
             pix_size = self.scene.map.pix_size
             offset = (pix_size - self.window_size.copy())/2
@@ -93,6 +92,14 @@ class Camera(object):
                     pose1 = self.transform(entity.path[:,idx])
                     pose2 = self.transform(entity.path[:,idx+1])
                     self.painter.drawLine(pose1[0],pose1[1],pose2[0],pose2[1])
+
+                self.paint_utils.set_color(self.painter,'start_pose',True)
+                s = self.transform(entity.path[:,0])
+                self.painter.drawEllipse(s[0],s[1],8,8)
+
+                self.paint_utils.set_color(self.painter,'goal_pose',True)
+                g = self.transform(entity.path[:,-1])
+                self.painter.drawEllipse(g[0],g[1],8,8)
         
     def update(self):
         '''

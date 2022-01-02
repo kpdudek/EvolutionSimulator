@@ -59,37 +59,42 @@ class Scene(QtWidgets.QWidget):
         food = Food(object_type)
         food.teleport(pose)
         id = self.create_id()
-        self.entities['food'].update({id:food})
-        return id
+        name = f'food{id}'
+        self.entities['food'].update({name:food})
+        return name
     
     def spawn_predator(self,object_type,pose):
         pred = Predator(object_type)
         pred.teleport(pose)
         id = self.create_id()
-        self.entities['predators'].update({id:pred})
-        return id
+        name = f'predator{id}'
+        self.entities['predators'].update({name:pred})
+        return name
     
     def spawn_prey(self,object_type,pose):
         prey = Prey(object_type)
         prey.teleport(pose)
         id = self.create_id()
-        self.entities['prey'].update({id:prey})
-        return id
+        name = f'prey{id}'
+        self.entities['prey'].update({name:prey})
+        return name
 
     def update(self):
         for key,entity_type in self.entities.items():
             if key != 'food':
-                for entity in entity_type.values():
+                for key,entity in entity_type.items():
                     if isinstance(entity.path,type(None)):
                         s = self.map.tile_at(entity.config['pose'])
                         if entity.config['type']=='predator':
                             prey = list(self.entities['prey'].keys())
                             idx = randint(0,len(prey)-1)
                             e = self.map.tile_at(self.entities['prey'][prey[idx]].config['pose'])
+                            self.logger.log(f'{key} requested a path to {prey[idx]}')
                         elif entity.config['type']=='prey':
                             food = list(self.entities['food'].keys())
                             idx = randint(0,len(food)-1)
                             e = self.map.tile_at(self.entities['food'][food[idx]].config['pose'])
+                            self.logger.log(f'{key} requested a path to {food[idx]}')
                         self.astar.clear_search()
                         entity.path,history = self.astar.get_plan(s,e)
                     entity.update()

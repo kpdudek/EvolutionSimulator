@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>228</width>
-    <height>627</height>
+    <height>714</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -27,10 +27,10 @@
        <item row="3" column="0">
         <widget class="QFrame" name="frame">
          <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
+          <enum>QFrame::Box</enum>
          </property>
          <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
+          <enum>QFrame::Plain</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout_2">
           <item row="1" column="0" colspan="2">
@@ -191,65 +191,6 @@
             </property>
            </widget>
           </item>
-          <item row="11" column="0" colspan="2">
-           <widget class="QFrame" name="frame_4">
-            <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
-            </property>
-            <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
-            </property>
-            <layout class="QGridLayout" name="gridLayout_6">
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_12">
-               <property name="text">
-                <string>0</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="2">
-              <widget class="QLabel" name="label_11">
-               <property name="text">
-                <string>100</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QSlider" name="prey_count_slider">
-               <property name="font">
-                <font>
-                 <pointsize>11</pointsize>
-                </font>
-               </property>
-               <property name="minimum">
-                <number>1</number>
-               </property>
-               <property name="maximum">
-                <number>100</number>
-               </property>
-               <property name="value">
-                <number>1</number>
-               </property>
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-              </widget>
-             </item>
-            </layout>
-           </widget>
-          </item>
           <item row="10" column="0" colspan="2">
            <widget class="QLabel" name="label_7">
             <property name="font">
@@ -264,131 +205,43 @@
             </property>
            </widget>
           </item>
-          <item row="8" column="0" colspan="2">
-           <widget class="QFrame" name="frame_2">
-            <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
+          <item row="14" column="0" colspan="2">
+           <widget class="QSpinBox" name="predator_count_spinbox">
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
-            <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
-            </property>
-            <property name="lineWidth">
+            <property name="minimum">
              <number>1</number>
             </property>
-            <layout class="QGridLayout" name="gridLayout_5">
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_9">
-               <property name="text">
-                <string>0</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QSlider" name="food_count_slider">
-               <property name="font">
-                <font>
-                 <pointsize>11</pointsize>
-                </font>
-               </property>
-               <property name="minimum">
-                <number>1</number>
-               </property>
-               <property name="maximum">
-                <number>100</number>
-               </property>
-               <property name="singleStep">
-                <number>10</number>
-               </property>
-               <property name="value">
-                <number>1</number>
-               </property>
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="tickPosition">
-                <enum>QSlider::NoTicks</enum>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="2">
-              <widget class="QLabel" name="label_10">
-               <property name="text">
-                <string>100</string>
-               </property>
-              </widget>
-             </item>
-            </layout>
+            <property name="maximum">
+             <number>100</number>
+            </property>
            </widget>
           </item>
-          <item row="14" column="0" colspan="2">
-           <widget class="QFrame" name="frame_5">
-            <property name="frameShape">
-             <enum>QFrame::NoFrame</enum>
+          <item row="11" column="0" colspan="2">
+           <widget class="QSpinBox" name="prey_count_spinbox">
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
             </property>
-            <property name="frameShadow">
-             <enum>QFrame::Raised</enum>
+            <property name="minimum">
+             <number>1</number>
             </property>
-            <layout class="QGridLayout" name="gridLayout_7">
-             <property name="leftMargin">
-              <number>0</number>
-             </property>
-             <property name="topMargin">
-              <number>0</number>
-             </property>
-             <property name="rightMargin">
-              <number>0</number>
-             </property>
-             <property name="bottomMargin">
-              <number>0</number>
-             </property>
-             <item row="0" column="2">
-              <widget class="QLabel" name="label_14">
-               <property name="text">
-                <string>100</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="0">
-              <widget class="QLabel" name="label_13">
-               <property name="text">
-                <string>0</string>
-               </property>
-              </widget>
-             </item>
-             <item row="0" column="1">
-              <widget class="QSlider" name="predator_count_slider">
-               <property name="font">
-                <font>
-                 <pointsize>11</pointsize>
-                </font>
-               </property>
-               <property name="minimum">
-                <number>1</number>
-               </property>
-               <property name="maximum">
-                <number>100</number>
-               </property>
-               <property name="value">
-                <number>1</number>
-               </property>
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-              </widget>
-             </item>
-            </layout>
+            <property name="maximum">
+             <number>100</number>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="0" colspan="2">
+           <widget class="QSpinBox" name="food_count_spinbox">
+            <property name="alignment">
+             <set>Qt::AlignCenter</set>
+            </property>
+            <property name="minimum">
+             <number>1</number>
+            </property>
+            <property name="maximum">
+             <number>100</number>
+            </property>
            </widget>
           </item>
          </layout>
@@ -397,13 +250,13 @@
        <item row="5" column="0">
         <widget class="QFrame" name="display_settings_frame">
          <property name="frameShape">
-          <enum>QFrame::StyledPanel</enum>
+          <enum>QFrame::Box</enum>
          </property>
          <property name="frameShadow">
-          <enum>QFrame::Raised</enum>
+          <enum>QFrame::Plain</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
-          <item row="3" column="0">
+          <item row="4" column="0">
            <widget class="QCheckBox" name="display_borders_checkbox">
             <property name="font">
              <font>
@@ -433,7 +286,7 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
+          <item row="2" column="0">
            <widget class="QCheckBox" name="display_fps_checkbox">
             <property name="font">
              <font>
@@ -448,7 +301,7 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="0">
+          <item row="5" column="0">
            <widget class="QCheckBox" name="display_paths_checkbox">
             <property name="font">
              <font>
@@ -457,6 +310,18 @@
             </property>
             <property name="text">
              <string>Display paths</string>
+            </property>
+           </widget>
+          </item>
+          <item row="1" column="0">
+           <widget class="QCheckBox" name="debug_mode_checkbox">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Debug mode</string>
             </property>
            </widget>
           </item>
@@ -537,10 +402,15 @@
   <tabstop>tile_size_spinbox</tabstop>
   <tabstop>y_map_size_spinbox</tabstop>
   <tabstop>x_map_size_spinbox</tabstop>
+  <tabstop>food_count_spinbox</tabstop>
+  <tabstop>prey_count_spinbox</tabstop>
+  <tabstop>predator_count_spinbox</tabstop>
   <tabstop>create_button</tabstop>
   <tabstop>log_fps_checkbox</tabstop>
+  <tabstop>debug_mode_checkbox</tabstop>
   <tabstop>display_fps_checkbox</tabstop>
   <tabstop>display_borders_checkbox</tabstop>
+  <tabstop>display_paths_checkbox</tabstop>
  </tabstops>
  <resources/>
  <connections/>
