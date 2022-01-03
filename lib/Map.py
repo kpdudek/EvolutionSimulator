@@ -2,6 +2,7 @@
 
 from PyQt5.QtCore import Qt
 from PyQt5 import QtGui
+from numpy.core.numeric import ones
 
 from lib.Logger import Logger, FilePaths
 from lib.PaintUtils import PaintUtils
@@ -76,6 +77,8 @@ class Map(object):
             self.map_params[self.config_name]['noise'] = Noise.generate_perlin_noise(self.chunk_size[0],self.chunk_size[1])
         elif self.map_params[self.config_name]['type'] == 'fractal':
             self.map_params[self.config_name]['noise'] = Noise.generate_fractal_noise_2d((self.chunk_size[0],self.chunk_size[1]),(2,2))
+        elif self.map_params[self.config_name]['type'] == 'none':
+            self.map_params[self.config_name]['noise'] = np.ones((self.chunk_size[0],self.chunk_size[1]))
         
     def generate_map(self):
         pose = np.array([0.0,0.0])
@@ -125,9 +128,9 @@ class Map(object):
                             if self.tiles[r+nx,c+ny].terrain_type not in invalid_terrain:
                                 self.tiles[r,c].neighbors.append((r+nx,c+ny))
                                 if abs(nx) == 1 and abs(ny) == 1:
-                                    self.tiles[r,c].neighbors_cost.append(1.5)
+                                    self.tiles[r,c].neighbors_cost.append(math.pow(math.pow(self.tile_size,2)+math.pow(self.tile_size,2),0.5))
                                 else:
-                                    self.tiles[r,c].neighbors_cost.append(1)
+                                    self.tiles[r,c].neighbors_cost.append(self.tile_size)
 
     def tile_at(self,coord):
         '''

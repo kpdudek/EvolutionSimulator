@@ -9,5 +9,10 @@
                 "type":"fractal",
                 "noise":null,
                 "land_cutoff":-0.08,
-                "sand_cutoff":-0.2}
+                "sand_cutoff":-0.2},
+    "all_grass":{
+                "type":"none",
+                "noise":null,
+                "land_cutoff":-1,
+                "sand_cutoff":-1}
 }
