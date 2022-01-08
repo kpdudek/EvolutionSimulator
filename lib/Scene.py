@@ -96,5 +96,5 @@ class Scene(QtWidgets.QWidget):
                             e = self.map.tile_at(self.entities['food'][food[idx]].config['pose'])
                             self.logger.log(f'{key} requested a path to {food[idx]}')
                         self.astar.clear_search()
-                        entity.path,history = self.astar.get_plan(s,e)
+                        entity.path,history = self.astar.get_plan(key,s,e)
                     entity.update()

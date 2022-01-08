@@ -19,7 +19,7 @@ class Entity(QWidget):
         
         self.config = {}
         self.path = None
-        self.path_idx = None
+        self.path_idx = 0
         self.load_config(object_name)
     
     def load_config(self,config_name):
@@ -55,20 +55,31 @@ class Entity(QWidget):
             self.logger.log("Teleport pose must be a numpy array!",color='r')
             return
         self.config['pose'] = np.array(pose)
+    
+    def follow_path(self):
+        if isinstance(self.path,np.ndarray):
+            r,c = self.path.shape
+            if self.path_idx < c:
+                x = self.path[0,self.path_idx]
+                y = self.path[1,self.path_idx]
+                self.config['pose'] = np.array([int(x),int(y)])
+                self.path_idx += 1
+            else:
+                self.path_idx = 0
 
 class Predator(Entity):
     def __init__(self,object_name):
         super().__init__(object_name)
 
     def update(self):
-        pass
+        self.follow_path()
 
 class Prey(Entity):
     def __init__(self,object_name):
         super().__init__(object_name)
     
     def update(self):
-        pass
+        self.follow_path()
 
 class Food(Entity):
     def __init__(self,object_name):

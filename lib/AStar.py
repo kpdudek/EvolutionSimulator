@@ -23,15 +23,16 @@ class AStar(object):
                 tile.backpointer_cost = None
         self.queue = PriorityQueue()
 
-    def get_plan(self,start_idx,goal_idx):
+    def get_plan(self,name,start_idx,goal_idx):
         '''
             Returns a 2xn array of coordinates
         '''
+        self.logger.log(f'Received request from: {name}')
         idx_closed = []
         self.queue.insert(start_idx,0)
         self.map.tiles[start_idx].backpointer_cost = 0
 
-        self.logger.log(f"Plan requested from node: [{start_idx}] to [{goal_idx}]")
+        self.logger.log(f"\tPlan requested from node: [{start_idx}] to [{goal_idx}]")
         sx,sy = self.map.tiles[start_idx].pose
         gx,gy = self.map.tiles[goal_idx].pose
         self.logger.log(f"\tCoordinates are: ({sx},{sy}) ({gx},{gy})")
