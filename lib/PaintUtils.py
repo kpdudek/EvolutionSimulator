@@ -10,7 +10,7 @@ class PaintUtils(object):
         self.colors = {
             "black":"#000000",
             "light_gray":"#a5a5a5",
-            "water_blue":"#0000a8",
+            "water_blue":"#1656ee",
             "grass_green":"#358d33",
             "sand":"#f3e48c",
             "start_pose":"#4cf94c",

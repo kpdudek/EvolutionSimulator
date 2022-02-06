@@ -8,6 +8,7 @@ from lib.Logger import Logger, FilePaths
 from lib.PaintUtils import PaintUtils
 import lib.Errors as errors
 from lib import Noise
+import lib.Geometry as geom
 
 from random import randint
 import numpy as np
@@ -88,10 +89,15 @@ class Map(object):
         noise = self.map_params[self.config_name]['noise']
         land_cutoff = self.map_params[self.config_name]['land_cutoff']
         sand_cutoff = self.map_params[self.config_name]['sand_cutoff']
+        max_noise_val = np.amax(noise)
+        min_noise_val = np.amin(noise)
+        self.logger.log(f'Max noise value: {max_noise_val}')
         for x in range(self.chunk_size[0]):
             for y in range(self.chunk_size[1]):
                 if noise[x,y] >= land_cutoff:
-                    color = QtGui.QColor(self.paint_utils.colors['grass_green'])
+                    # color = QtGui.QColor(self.paint_utils.colors['grass_green'])
+                    green_channel = geom.map_val(noise[x,y],land_cutoff,max_noise_val,175,100)
+                    color = QtGui.QColor(0,int(green_channel),0)
                     terrain_type = 'grass'
                     moisture = .3
                 elif noise[x,y] >= sand_cutoff:
@@ -99,7 +105,9 @@ class Map(object):
                     terrain_type = 'sand'
                     moisture = .6
                 elif noise[x,y] < sand_cutoff:
-                    color = QtGui.QColor(self.paint_utils.colors['water_blue'])
+                    # color = QtGui.QColor(self.paint_utils.colors['water_blue'])
+                    blue_channel = geom.map_val(noise[x,y],min_noise_val,sand_cutoff,110,255)
+                    color = QtGui.QColor(0,0,int(blue_channel))
                     terrain_type = 'water'
                     moisture = 1.0
                 sunlight = 1.0
@@ -108,7 +116,6 @@ class Map(object):
                 pose[1] += self.tile_size
             pose[1] = 0.0
             pose[0] += self.tile_size
-        
         self.pix_size = np.array([self.chunk_size[0]*self.tile_size,self.chunk_size[1]*self.tile_size])
 
     def set_neighbors(self,invalid_terrain=['water']):

@@ -9,6 +9,10 @@ def pixels_to_meters(pixels):
 def meters_to_pixels(meters):
     return float(meters) / 0.01
 
+def map_val(val,in_start,in_end,out_start,out_end):
+    slope = (out_end - out_start)/(in_end - in_start)
+    return out_start + slope*(val-in_start)
+
 def min_dist_point_to_line(P,A,B):
     '''This function computes the shortest distance between a point and a line segment
         params:
