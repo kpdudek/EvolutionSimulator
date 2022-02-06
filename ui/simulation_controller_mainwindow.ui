@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>235</width>
+    <width>228</width>
     <height>714</height>
    </rect>
   </property>
@@ -280,7 +280,7 @@
           <enum>QFrame::Plain</enum>
          </property>
          <layout class="QGridLayout" name="gridLayout_3">
-          <item row="4" column="0">
+          <item row="5" column="0">
            <widget class="QCheckBox" name="display_borders_checkbox">
             <property name="font">
              <font>
@@ -295,7 +295,7 @@
             </property>
            </widget>
           </item>
-          <item row="0" column="0">
+          <item row="1" column="0">
            <widget class="QCheckBox" name="log_fps_checkbox">
             <property name="font">
              <font>
@@ -310,7 +310,7 @@
             </property>
            </widget>
           </item>
-          <item row="2" column="0">
+          <item row="3" column="0">
            <widget class="QCheckBox" name="display_fps_checkbox">
             <property name="font">
              <font>
@@ -325,7 +325,7 @@
             </property>
            </widget>
           </item>
-          <item row="5" column="0">
+          <item row="6" column="0">
            <widget class="QCheckBox" name="display_paths_checkbox">
             <property name="font">
              <font>
@@ -337,7 +337,7 @@
             </property>
            </widget>
           </item>
-          <item row="1" column="0">
+          <item row="2" column="0">
            <widget class="QCheckBox" name="debug_mode_checkbox">
             <property name="font">
              <font>
@@ -346,6 +346,18 @@
             </property>
             <property name="text">
              <string>Debug mode</string>
+            </property>
+           </widget>
+          </item>
+          <item row="0" column="0">
+           <widget class="QPushButton" name="controls_button">
+            <property name="font">
+             <font>
+              <pointsize>12</pointsize>
+             </font>
+            </property>
+            <property name="text">
+             <string>Controls</string>
             </property>
            </widget>
           </item>
@@ -390,8 +402,8 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>235</width>
-     <height>21</height>
+     <width>228</width>
+     <height>22</height>
     </rect>
    </property>
    <widget class="QMenu" name="menuFile">

@@ -1,10 +1,49 @@
 #!/usr/bin/env python3
 
-from PyQt5.QtWidgets import QMainWindow, QCheckBox
+from PyQt5.QtWidgets import QMainWindow, QCheckBox, QWidget
 from PyQt5.QtCore import Qt, pyqtSignal
 from PyQt5 import uic
 
 from lib.Logger import FilePaths, Logger
+
+class KeyControls(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.logger = Logger()
+        self.file_paths = FilePaths()
+
+        uic.loadUi(f'{self.file_paths.user_path}ui/keycontrols.ui',self)
+        self.setWindowTitle('Key Controls')
+
+        self.qt_key_map = {}
+        self.key_map ={}
+        self.generate_key_dict()
+        self.populate_key_lists()
+
+    def generate_key_dict(self):
+        self.qt_key_map = {
+                            "W":Qt.Key_W,
+                            "S":Qt.Key_S,
+                            "A":Qt.Key_A,
+                            "D":Qt.Key_D,
+                            "C":Qt.Key_C,
+                            "1":Qt.Key_1
+                            }
+
+        self.key_map = {
+                        "Camera Forward":"W",
+                        "Camera Backward":"S",
+                        "Camera Left":"A",
+                        "Camera Right":"D",
+                        "Center Camera":"C",
+                        "Open Simulation Controller":"1",
+                        }
+    
+    def populate_key_lists(self):
+        for key,assignment in list(self.key_map.items()):
+            self.key_list.addItem(key)
+            self.assignment_list.addItem(assignment)
+
 
 class SimulationController(QMainWindow):
     '''
@@ -21,6 +60,9 @@ class SimulationController(QMainWindow):
 
         uic.loadUi(f'{self.file_paths.user_path}ui/simulation_controller_mainwindow.ui',self)
         self.setWindowTitle('Simulation Controller')
+
+        self.key_controls = KeyControls()
+        self.controls_button.clicked.connect(self.key_controls.show)
 
         self.create_button.clicked.connect(self.apply_settings)
         self.action_save_default.triggered.connect(self.save_as_default)
