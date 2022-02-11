@@ -95,8 +95,7 @@ class Map(object):
         for x in range(self.chunk_size[0]):
             for y in range(self.chunk_size[1]):
                 if noise[x,y] >= land_cutoff:
-                    # color = QtGui.QColor(self.paint_utils.colors['grass_green'])
-                    green_channel = geom.map_val(noise[x,y],land_cutoff,max_noise_val,175,100)
+                    green_channel = geom.map_val(noise[x,y],land_cutoff,max_noise_val,150,120)
                     color = QtGui.QColor(0,int(green_channel),0)
                     terrain_type = 'grass'
                     moisture = .3
@@ -105,8 +104,7 @@ class Map(object):
                     terrain_type = 'sand'
                     moisture = .6
                 elif noise[x,y] < sand_cutoff:
-                    # color = QtGui.QColor(self.paint_utils.colors['water_blue'])
-                    blue_channel = geom.map_val(noise[x,y],min_noise_val,sand_cutoff,110,255)
+                    blue_channel = geom.map_val(noise[x,y],min_noise_val,sand_cutoff,120,160)
                     color = QtGui.QColor(0,0,int(blue_channel))
                     terrain_type = 'water'
                     moisture = 1.0
@@ -120,13 +118,12 @@ class Map(object):
 
     def set_neighbors(self,invalid_terrain=['water']):
         # For every tile in the map
+        neighbor_loop_idx = 0
         for r in range(self.chunk_size[0]):
             for c in range(self.chunk_size[1]):
-
                 # For every neighbor of that tile, diagonals included
                 for nx in range(-1,2):
                     for ny in range(-1,2):
-                
                         # Ignore the current tile (r,c), when both offsets are zero
                         if nx == 0 and ny == 0:
                             pass
@@ -138,6 +135,8 @@ class Map(object):
                                     self.tiles[r,c].neighbors_cost.append(math.pow(math.pow(self.tile_size,2)+math.pow(self.tile_size,2),0.5))
                                 else:
                                     self.tiles[r,c].neighbors_cost.append(self.tile_size)
+                        neighbor_loop_idx += 1
+        self.logger.log(f"Neighbor loop ran {neighbor_loop_idx} times.")
 
     def tile_at(self,coord):
         '''

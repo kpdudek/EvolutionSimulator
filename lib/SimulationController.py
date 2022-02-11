@@ -126,6 +126,8 @@ class SimulationController(QMainWindow):
         '''
             Generate a new simulation by calling each settings method
         '''
+        self.logger.insert_blank_lines(1,console_out=True)
+        self.logger.log(f'Resetting simulation...')
         self.validate_spinboxes()
         self.set_map_config()
         self.update_display_settings()

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+from cmath import log
 import sys, inspect, pathlib
 import datetime as dt
 
@@ -25,20 +26,22 @@ class Logger():
     def __init__(self):
         self.file_paths = FilePaths()
 
-    def insert_blank_lines(self,num):
+    def insert_blank_lines(self,num,console_out=False):
         '''
         Inserts blank lines into the log file to help differentiate game sessions.
         params:
             num (int): Number of blank lines to insert. Must be >=1
         '''
-        if num > 1:
-            log_msg = '\n'*(num-1)
-        elif num == 1:
-            log_msg = '\n'
-        else:
+        if num < 1:
             return
-        self.fp = open('%slogs.txt'%(self.file_paths.user_path),'a')
+        elif num == 1:
+            log_msg = ''
+        elif num > 1:
+            log_msg = '\n'*(num-1)
+        self.fp = open(f'{self.file_paths.user_path}logs.txt','a')
         self.fp.write(f'{log_msg}')
+        if console_out:
+            print(log_msg)
         self.fp.close()
         
     def log(self, text, color=None):
@@ -48,7 +51,7 @@ class Logger():
             text (str): Message to be printed and logged
             color (str): Optional. Color to print the message in. Default is white.
         '''
-        self.fp = open('%slogs.txt'%(self.file_paths.user_path),'a')
+        self.fp = open(f'{self.file_paths.user_path}logs.txt','a')
 
         RESET = '\033[m' # reset to the default color
         GREEN =  '\033[32m'
